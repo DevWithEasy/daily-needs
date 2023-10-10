@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { } from '../controllers/userControllers';
 
-const productRouter = Router()
+const replyRouter = Router()
 
-productRouter.post('/', )
+replyRouter.post('/', )
     .post('/', )
     .get('/',)
     .post('/',)
 
-export default productRouter
+export default replyRouter

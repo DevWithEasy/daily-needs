@@ -1,25 +1,23 @@
 import dotenv from "dotenv";
-import express, { Request, Response,Application } from "express";
+import express, { Application } from "express";
 import { connectDB } from "./config/connectDB";
 import errorHandler from "./middleware/errorHandler";
 import applyMiddleware from "./middleware/middlewares";
+import applyRouter from "./routes/routes";
 dotenv.config();
-const app : Application  = express();
+const app: Application = express();
 
 //database connection
 connectDB();
 
 //apply middleware configuration
-applyMiddleware(app)
+applyMiddleware(app);
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({
-    message: "Hello Word",
-  });
-});
+//apply routes
+applyRouter(app);
 
 //error handling
-errorHandler(app)
+errorHandler(app);
 
 app.listen(8080, () => {
   console.log("listening on port http://loaclhost:8080");

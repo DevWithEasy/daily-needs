@@ -1,6 +1,11 @@
-import {Router}  from 'express';
-import { signup } from '../controllers/userControllers';
+import { Router } from 'express';
+import { getProfile, signin, signup, updateProfile } from '../controllers/userControllers';
 
-const router = Router()
+const userRouter = Router()
 
-router.post('/signup',signup)
+userRouter.post('/signup', signup)
+    .post('/signin', signin)
+    .get('/:id',getProfile)
+    .put('/update/:id',updateProfile)
+
+export default userRouter
