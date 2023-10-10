@@ -1,9 +1,11 @@
+import dotenv from "dotenv";
 import express, { Request, Response } from "express";
-// import dotenv from 'dotenv'
-
-// dotenv.config()
+import { connectDB } from "./config/connectDB";
+dotenv.config();
 const app = express();
 
+//database connection
+connectDB();
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
