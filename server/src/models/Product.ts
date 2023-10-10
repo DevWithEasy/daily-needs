@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IProduct } from "../interface/models";
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -39,14 +40,6 @@ const productSchema = new mongoose.Schema({
     timestamps : true
 });
 
-interface IProduct extends Document {
-    name: string,
-    sku : string,
-    price : number,
-    stock : number,
-    description : string,
-    additionalInfo : string
-    comments : string[],
-}
+
 
 export default mongoose.model<IProduct>("Product", productSchema);

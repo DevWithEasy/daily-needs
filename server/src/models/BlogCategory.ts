@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { ICategory } from "../interface/models";
 
 const blogCategorySchema = new mongoose.Schema({
     name: {
@@ -10,8 +11,6 @@ const blogCategorySchema = new mongoose.Schema({
     timestamps : true
 });
 
-interface IBlogCategory extends Document {
-    name: string
-}
 
-export default mongoose.model<IBlogCategory>("BlogCategory", blogCategorySchema);
+
+export default mongoose.model<ICategory>("BlogCategory", blogCategorySchema);

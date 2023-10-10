@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IComment } from "../interface/models";
 
 const commentSchema = new mongoose.Schema({
     user: {
@@ -21,9 +22,5 @@ const commentSchema = new mongoose.Schema({
     timestamps : true
 });
 
-interface IComment extends Document {
-    name: string,
-    comment : string
-}
 
 export default mongoose.model<IComment>("Comment", commentSchema);

@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IOrder } from "../interface/models";
 
 const orderSchema = new mongoose.Schema({
     user: {
@@ -47,18 +48,6 @@ const orderSchema = new mongoose.Schema({
     timestamps : true
 });
 
-interface IOrder extends Document {
-    name: string,
-    bill : Number,
-    charge : Number,
-    products : {
-        quantity : Number,
-        product : string
-    }[],
-    status : {
-        date : string,
-        status : string
-    }[]
-}
+
 
 export default mongoose.model<IOrder>("Order", orderSchema);

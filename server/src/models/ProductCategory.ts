@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { ICategory } from "../interface/models";
 
 const productCategorySchema = new mongoose.Schema({
     name: {
@@ -10,8 +11,4 @@ const productCategorySchema = new mongoose.Schema({
     timestamps : true
 });
 
-interface IProductCategory extends Document {
-    name: string
-}
-
-export default mongoose.model<IProductCategory>("ProductCategory", productCategorySchema);
+export default mongoose.model<ICategory>("ProductCategory", productCategorySchema);

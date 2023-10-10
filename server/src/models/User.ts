@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IUser } from "../interface/models";
 
 const userSchema = new mongoose.Schema(
     {
@@ -62,19 +63,5 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-interface IUser extends Document {
-    name: string;
-    email: string;
-    image: string;
-    password: string;
-    isVerified: Boolean;
-    orders: string[];
-    address: {
-        area: string;
-        postOfice: string;
-        upazilla: string;
-        district: string;
-    };
-}
 
 export default mongoose.model<IUser>("User", userSchema);

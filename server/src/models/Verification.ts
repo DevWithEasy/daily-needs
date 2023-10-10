@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IVerification } from "../interface/models";
 
 const verificationSchema = new mongoose.Schema({
     user: {
@@ -12,10 +13,5 @@ const verificationSchema = new mongoose.Schema({
 },{
     timestamps : true
 });
-
-interface IVerification extends Document {
-    user: string,
-    code : true
-}
 
 export default mongoose.model<IVerification>("Verification", verificationSchema);

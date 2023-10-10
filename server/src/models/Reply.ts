@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IReply } from "../interface/models";
 
 const replySchema = new mongoose.Schema({
     user: {
@@ -13,9 +14,6 @@ const replySchema = new mongoose.Schema({
     timestamps : true
 });
 
-interface IReply extends Document {
-    name: string,
-    comment : string
-}
+
 
 export default mongoose.model<IReply>("Reply", replySchema);
