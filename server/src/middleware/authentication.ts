@@ -21,7 +21,7 @@ const authenticated = async (req: IAuthRequest, res: Response, next: NextFunctio
         })
 
     } catch (error) {
-        next(new AppError(500, 'Internal Server Error'))
+        next(new AppError(500, error.message))
     }
 }
 

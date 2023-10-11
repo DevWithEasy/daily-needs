@@ -23,8 +23,10 @@ import Profile from "./users/Profile";
 import UpdateProfile from "./users/UpdateProfile";
 import TrackOrder from "./users/TrackOrder";
 import Order from "./admin/Order";
+import Verification from "./Verification";
 
 export {
+    Verification,
     Order,
     TrackOrder,
     MyOders,

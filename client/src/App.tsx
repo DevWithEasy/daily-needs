@@ -22,6 +22,7 @@ import {
   TrackOrder,
   UpdateProfile,
   Users,
+  Verification,
 } from "./pages/Index";
 
 function App() {
@@ -41,6 +42,10 @@ function App() {
         {
           path: "/signin",
           element: <SignIn />,
+        },
+        {
+          path: "/verification",
+          element: <Verification />,
         },
         {
           path: "/products",

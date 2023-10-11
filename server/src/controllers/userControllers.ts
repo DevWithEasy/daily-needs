@@ -17,12 +17,13 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         });
 
         const user = await newUser.save();
-
-        const code = await bcrypt.hash(verifyCode(),10)
+        
+        const code = verifyCode()
+        const hashcode = await bcrypt.hash(code,10)
 
         const newVerification = new Verification({
             user : user._id,
-            code : code
+            code : hashcode
         })
 
         await newVerification.save()
@@ -42,7 +43,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 const signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await User.findOne({
-            $or: [{ email: req.body.email }, { phone: req.body.phone }],
+            $or: [{ email: req.body.email }, { phone: req.body.email }],
         });
         if (!user) {
             return next(new AppError(404, "Account not found."));
@@ -121,13 +122,13 @@ const findAccount = async (req: Request,res: Response,next: NextFunction) => {
 const verifyAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
     try {
         const findCode = await Verification.findOne({user : req.user})
-
+        
         if(Date.now() > findCode.expire){
             return next(new AppError(401,'Verification code expired.'))
         }
 
         const isValid = await bcrypt.compare(req.body.code, findCode.code)
-
+        
         if(!isValid){
             return next(new AppError(404,'Verification code not Found.'))
         }
