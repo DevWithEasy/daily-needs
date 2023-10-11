@@ -30,7 +30,8 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         return res.json({
             success: true,
             status: 200,
-            data: user,
+            message : 'Successfully signup.',
+            data: {}
         });
 
     } catch (error) {
@@ -54,11 +55,12 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
         return res.json({
             success: true,
             status: 200,
+            message : 'Successfully signin.',
             token: token,
             data: user,
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
@@ -68,10 +70,11 @@ const getProfile = async (req: Request, res: Response, next: NextFunction) => {
         return res.json({
             success: true,
             status: 200,
+            message : 'Suceesfully find account.',
             data: user,
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
@@ -89,62 +92,72 @@ const updateProfile = async (req: IAuthRequest,res: Response,next: NextFunction)
         return res.json({
             success: true,
             status: 200,
+            message : 'Profile updated successfully.',
             data: user,
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
-const findAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
+const findAccount = async (req: Request,res: Response,next: NextFunction) => {
     try {
-        
+        const {q} = req.query
+        const user = await User.findOne({$or:[{email : q},{phone : q}]})
+        if (!user) {
+            return next(new AppError(404, "Account not found."));
+        }
         return res.json({
             success: true,
             status: 200,
-            data: 'user',
+            message : 'Successfully account find.',
+            data: user,
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
 const verifyAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
     try {
-        
+        const findCode = await Verification.findOne({user : req.user})
+
+        if(Date.now() > findCode.expire){
+            return next(new AppError(401,'Verification code expired.'))
+        }
+
+        const isValid = await bcrypt.compare(req.body.code, findCode.code)
+
+        if(!isValid){
+            return next(new AppError(404,'Verification code not Found.'))
+        }
+
+        await Verification.deleteMany({user : req.user})
+
         return res.json({
             success: true,
             status: 200,
-            data: 'user',
+            message : 'Successfully verified.',
+            data: {},
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
 const forgetAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
     try {
-        
-        return res.json({
-            success: true,
-            status: 200,
-            data: 'user',
-        });
-    } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
-    }
-};
+        const token = await jwt.sign({id : req.params.id},process.env.JWT_TOKEN)
 
-const forgetVerifyAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
-    try {
-        
         return res.json({
             success: true,
             status: 200,
-            data: 'user',
+            message : 'Verification code sent.',
+            token : token,
+            data: {},
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
@@ -157,7 +170,7 @@ const changeEmailAccount = async (req: IAuthRequest,res: Response,next: NextFunc
             data: 'user',
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
@@ -170,7 +183,7 @@ const changePhoneAccount = async (req: IAuthRequest,res: Response,next: NextFunc
             data: 'user',
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
@@ -183,8 +196,8 @@ const changeImageAccount = async (req: IAuthRequest,res: Response,next: NextFunc
             data: 'user',
         });
     } catch (error) {
-        next(new AppError(500, "Inernel server Error"));
+        next(new AppError(500, error.message));
     }
 };
 
-export { getProfile, signin, signup, updateProfile,findAccount,verifyAccount,forgetAccount,forgetVerifyAccount,changeImageAccount,changeEmailAccount,changePhoneAccount };
+export { getProfile, signin, signup, updateProfile,findAccount,verifyAccount,forgetAccount,changeImageAccount,changeEmailAccount,changePhoneAccount };

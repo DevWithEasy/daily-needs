@@ -9,6 +9,10 @@ const verificationSchema = new mongoose.Schema({
     code : {
         type : String,
         required: true
+    },
+    expire : {
+        type : Date,
+        default : Date.now() + 21600000
     }
 },{
     timestamps : true

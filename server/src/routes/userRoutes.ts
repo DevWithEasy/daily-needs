@@ -4,7 +4,6 @@ import {
     changeEmailAccount,
     findAccount,
     forgetAccount,
-    forgetVerifyAccount,
     getProfile,
     signin,
     signup,
@@ -22,9 +21,8 @@ userRouter
     .get("/:id", getProfile)
     .put("/update", authenticated, updateProfile)
     .post("/find", findAccount)
-    .put("/verify", verifyAccount)
+    .put("/verify",authenticated, verifyAccount)
     .post("/forget", forgetAccount)
-    .put("/forget_verify", forgetVerifyAccount)
     .post("/change_email", changeEmailAccount)
     .post("/change_phone", changePhoneAccount)
     .post("/change_image", changeImageAccount)

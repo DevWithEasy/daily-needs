@@ -56,7 +56,8 @@ interface IReply extends Document {
 
 interface IVerification extends Document {
     user: string;
-    code: true;
+    code: string;
+    expire : number
 }
 
 export { ICategory, IComment, IOrder, IProduct, IReply, IUser, IVerification };
