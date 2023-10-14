@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
-    changePhoneAccount,
     changeEmailAccount,
+    changeImageAccount,
+    changePhoneAccount,
     findAccount,
     forgetAccount,
     getProfile,
@@ -9,7 +10,7 @@ import {
     signup,
     updateProfile,
     verifyAccount,
-    changeImageAccount,
+    verifyCodeSendAgain,
 } from "../controllers/userControllers";
 import authenticated from "../middleware/authentication";
 
@@ -21,10 +22,11 @@ userRouter
     .get("/:id", getProfile)
     .put("/update", authenticated, updateProfile)
     .post("/find", findAccount)
-    .put("/verify",authenticated, verifyAccount)
+    .put("/verify", authenticated, verifyAccount)
     .post("/forget", forgetAccount)
+    .post("/send_code_again", verifyCodeSendAgain)
     .post("/change_email", changeEmailAccount)
     .post("/change_phone", changePhoneAccount)
-    .post("/change_image", changeImageAccount)
+    .post("/change_image", changeImageAccount);
 
 export default userRouter;

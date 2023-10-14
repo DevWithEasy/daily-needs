@@ -1,11 +1,16 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
+import transporter from "../config/emailTransport";
 import IAuthRequest from "../interface/authentication";
 import User from "../models/User";
-import AppError from "../utils/AppError";
-import verifyCode from "../utils/verifyCode";
 import Verification from "../models/Verification";
+import AppError from "../utils/AppError";
+import {
+    accountVeification,
+    verifySuccessfully,
+} from "../utils/emailTemplateUtils";
+import verifyCode from "../utils/verifyCode";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -17,24 +22,29 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         });
 
         const user = await newUser.save();
-        
-        const code = verifyCode()
-        const hashcode = await bcrypt.hash(code,10)
+
+        const code = verifyCode();
+        const hashcode = await bcrypt.hash(code, 10);
 
         const newVerification = new Verification({
-            user : user._id,
-            code : hashcode
-        })
-
-        await newVerification.save()
-
-        return res.json({
-            success: true,
-            status: 200,
-            message : 'Successfully signup.',
-            data: {}
+            user: user._id,
+            code: hashcode,
         });
 
+        await newVerification.save();
+
+        transporter.sendMail(accountVeification(req.body.email, code), (err) => {
+            if (err) {
+                next(new AppError(500, err.message));
+            } else {
+                return res.json({
+                    success: true,
+                    status: 200,
+                    message: "Successfully signup.",
+                    data: {},
+                });
+            }
+        });
     } catch (error) {
         next(new AppError(500, error.message));
     }
@@ -56,7 +66,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
         return res.json({
             success: true,
             status: 200,
-            message : 'Successfully signin.',
+            message: "Successfully signin.",
             token: token,
             data: user,
         });
@@ -71,7 +81,7 @@ const getProfile = async (req: Request, res: Response, next: NextFunction) => {
         return res.json({
             success: true,
             status: 200,
-            message : 'Suceesfully find account.',
+            message: "Suceesfully find account.",
             data: user,
         });
     } catch (error) {
@@ -79,7 +89,11 @@ const getProfile = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const updateProfile = async (req: IAuthRequest,res: Response,next: NextFunction) => {
+const updateProfile = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const user = await User.findByIdAndUpdate(req.user, {
             $set: {
@@ -93,7 +107,7 @@ const updateProfile = async (req: IAuthRequest,res: Response,next: NextFunction)
         return res.json({
             success: true,
             status: 200,
-            message : 'Profile updated successfully.',
+            message: "Profile updated successfully.",
             data: user,
         });
     } catch (error) {
@@ -101,17 +115,17 @@ const updateProfile = async (req: IAuthRequest,res: Response,next: NextFunction)
     }
 };
 
-const findAccount = async (req: Request,res: Response,next: NextFunction) => {
+const findAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {q} = req.query
-        const user = await User.findOne({$or:[{email : q},{phone : q}]})
+        const { q } = req.query;
+        const user = await User.findOne({ $or: [{ email: q }, { phone: q }] });
         if (!user) {
             return next(new AppError(404, "Account not found."));
         }
         return res.json({
             success: true,
             status: 200,
-            message : 'Successfully account find.',
+            message: "Successfully account find.",
             data: user,
         });
     } catch (error) {
@@ -119,26 +133,84 @@ const findAccount = async (req: Request,res: Response,next: NextFunction) => {
     }
 };
 
-const verifyAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
+const verifyAccount = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        const findCode = await Verification.findOne({user : req.user})
-        
-        if(Date.now() > findCode.expire){
-            return next(new AppError(401,'Verification code expired.'))
+        const user = await User.findById(req.user);
+        const findCode = await Verification.findOne({ user: req.user });
+
+        if (Date.now() > findCode.expire) {
+            return next(new AppError(401, "Verification code expired."));
         }
 
-        const isValid = await bcrypt.compare(req.body.code, findCode.code)
-        
-        if(!isValid){
-            return next(new AppError(404,'Verification code not Found.'))
+        const isValid = await bcrypt.compare(req.body.code, findCode.code);
+
+        if (!isValid) {
+            return next(new AppError(404, "Verification code not Found."));
         }
 
-        await Verification.deleteMany({user : req.user})
+        await Verification.deleteMany({ user: req.user });
+
+        transporter.sendMail(verifySuccessfully(user.email), (err) => {
+            if (err) {
+                next(new AppError(500, err.message));
+            } else {
+                return res.json({
+                    success: true,
+                    status: 200,
+                    message: "Successfully verified.",
+                    data: {},
+                });
+            }
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
+
+const verifyCodeSendAgain = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const user = await User.findOne({ email: req.query.email });
+
+        const code = verifyCode();
+
+        transporter.sendMail(accountVeification(user.email, code), (err) => {
+            if (err) {
+                next(new AppError(500, err.message));
+            } else {
+                return res.json({
+                    success: true,
+                    status: 200,
+                    message: "Veridication sent successfully.",
+                    data: {},
+                });
+            }
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
+
+const forgetAccount = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const token = await jwt.sign({ id: req.params.id }, process.env.JWT_TOKEN);
 
         return res.json({
             success: true,
             status: 200,
-            message : 'Successfully verified.',
+            message: "Verification code sent.",
+            token: token,
             data: {},
         });
     } catch (error) {
@@ -146,59 +218,64 @@ const verifyAccount = async (req: IAuthRequest,res: Response,next: NextFunction)
     }
 };
 
-const forgetAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
+const changeEmailAccount = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        const token = await jwt.sign({id : req.params.id},process.env.JWT_TOKEN)
-
         return res.json({
             success: true,
             status: 200,
-            message : 'Verification code sent.',
-            token : token,
-            data: {},
+            data: "user",
         });
     } catch (error) {
         next(new AppError(500, error.message));
     }
 };
 
-const changeEmailAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
+const changePhoneAccount = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        
         return res.json({
             success: true,
             status: 200,
-            data: 'user',
+            data: "user",
         });
     } catch (error) {
         next(new AppError(500, error.message));
     }
 };
 
-const changePhoneAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
+const changeImageAccount = async (
+    req: IAuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        
         return res.json({
             success: true,
             status: 200,
-            data: 'user',
+            data: "user",
         });
     } catch (error) {
         next(new AppError(500, error.message));
     }
 };
 
-const changeImageAccount = async (req: IAuthRequest,res: Response,next: NextFunction) => {
-    try {
-        
-        return res.json({
-            success: true,
-            status: 200,
-            data: 'user',
-        });
-    } catch (error) {
-        next(new AppError(500, error.message));
-    }
+export {
+    changeEmailAccount,
+    changeImageAccount,
+    changePhoneAccount,
+    findAccount,
+    forgetAccount,
+    getProfile,
+    signin,
+    signup,
+    updateProfile,
+    verifyAccount,
+    verifyCodeSendAgain,
 };
-
-export { getProfile, signin, signup, updateProfile,findAccount,verifyAccount,forgetAccount,changeImageAccount,changeEmailAccount,changePhoneAccount };
