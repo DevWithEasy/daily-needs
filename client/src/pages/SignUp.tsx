@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import {Input} from '../components/Index'
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
+import {useNavigate} from 'react-router-dom';
 const SignUp = () => {
+  const navigate = useNavigate()
   const [value,setValue] = useState({
     name : '',
     email : '',
@@ -24,15 +26,18 @@ const SignUp = () => {
       const res = await axios.post(`${apiUrl}/user/signup`,value)
       if(res.data.success === true){
         console.log(res.data.message)
+        localStorage.setItem('token',res.data.token)
+        navigate('/verification')
       }
     } catch (error) {
       console.log(error)
     }
   }
-  return <div>
+  return <div className='md:w-1/2 md:mx-auto mx-1 my-10 border rounded-md'>
+    <h2 className='p-2 bg-green-600 text-white text-center text-2xl rounded-t-md'>Create new account</h2>
     <form
       onSubmit={handleSignup}
-      className="space-y-3"
+      className="p-2 space-y-3"
     >
       <Input {...{
         name : 'name',
@@ -70,7 +75,7 @@ const SignUp = () => {
       <input 
         type='submit'
         value='Sign up'
-        className="px-6 py-2 bg-green-500 text-white rounded cursor-pointer"
+        className="px-6 py-2 bg-green-600 text-white rounded cursor-pointer"
       />
     </form>
   </div>;

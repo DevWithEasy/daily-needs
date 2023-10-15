@@ -1,5 +1,6 @@
 import { useRoutes } from "react-router-dom";
 import {
+  Forget,
   Blog,
   Blogs,
   Cart,
@@ -23,6 +24,7 @@ import {
   UpdateProfile,
   Users,
   Verification,
+  Find
 } from "./pages/Index";
 
 function App() {
@@ -42,6 +44,14 @@ function App() {
         {
           path: "/signin",
           element: <SignIn />,
+        },
+        {
+          path: "/find",
+          element: <Find />,
+        },
+        {
+          path: "/forget/:token/:code",
+          element: <Forget />,
         },
         {
           path: "/verification",

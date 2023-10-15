@@ -33,8 +33,9 @@ const SignIn = () => {
     }
   };
   return (
-    <div>
-      <form onSubmit={handleSignIn} className="space-y-3">
+    <div className='md:w-1/2 md:mx-auto mx-1 my-10 border rounded-md'>
+      <h2 className='p-2 bg-green-600 text-white text-center text-2xl rounded-t-md'>Create new account</h2>
+      <form onSubmit={handleSignIn} className="p-2 space-y-3">
         <Input
           {...{
             name: "email",
@@ -55,7 +56,7 @@ const SignIn = () => {
         <input
           type="submit"
           value="Sign in"
-          className="px-6 py-2 bg-green-500 text-white rounded cursor-pointer"
+          className="px-6 py-2 bg-green-600 text-white rounded cursor-pointer"
         />
       </form>
     </div>

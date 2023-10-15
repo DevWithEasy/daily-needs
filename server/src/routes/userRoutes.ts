@@ -11,6 +11,7 @@ import {
     updateProfile,
     verifyAccount,
     verifyCodeSendAgain,
+    changePassword
 } from "../controllers/userControllers";
 import authenticated from "../middleware/authentication";
 
@@ -21,10 +22,11 @@ userRouter
     .post("/signin", signin)
     .get("/:id", getProfile)
     .put("/update", authenticated, updateProfile)
-    .post("/find", findAccount)
     .put("/verify", authenticated, verifyAccount)
-    .post("/forget", forgetAccount)
-    .post("/send_code_again", verifyCodeSendAgain)
+    .get("/find/account",findAccount)
+    .post("/forget/:id", forgetAccount)
+    .post("/send_code_again", authenticated, verifyCodeSendAgain)
+    .put("/reset_password", authenticated, changePassword)
     .post("/change_email", changeEmailAccount)
     .post("/change_phone", changePhoneAccount)
     .post("/change_image", changeImageAccount);

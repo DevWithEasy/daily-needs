@@ -24,8 +24,12 @@ import UpdateProfile from "./users/UpdateProfile";
 import TrackOrder from "./users/TrackOrder";
 import Order from "./admin/Order";
 import Verification from "./Verification";
+import Find from "./Find";
+import Forget from "./Forget";
 
 export {
+    Forget,
+    Find,
     Verification,
     Order,
     TrackOrder,

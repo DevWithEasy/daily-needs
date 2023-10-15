@@ -3,13 +3,13 @@ import {Header,Footer} from '../components/Index'
 
 const Layout = () => {
   return <>
-    <Header/>
+    {/* <Header/> */}
     <div
       className='w-11/12 mx-auto'
     >
       <Outlet/>
     </div>
-    <Footer/>
+    {/* <Footer/> */}
   </>;
 };
 
