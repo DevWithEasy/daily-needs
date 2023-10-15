@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import apiUrl from '../utils/apiUrl';
+import { useNavigate } from 'react-router-dom';
 
 type useType = {
     _id: string
@@ -19,6 +20,7 @@ type useType = {
 }
 
 const Find = () => {
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [user, setUser] = useState<useType | null>()
 
@@ -31,7 +33,6 @@ const Find = () => {
             const res = await axios.get(`${apiUrl}/user/find/account?q=${email}`)
             if (res.data.status === 200) {
                 setUser(res.data.data)
-                console.log(res.data.data)
             }
         } catch (error) {
             console.log(error)
@@ -42,8 +43,7 @@ const Find = () => {
         try {
             const res = await axios.post(`${apiUrl}/user/forget/${user?._id}`)
             if (res.data.status === 200) {
-                setUser(res.data.data)
-                console.log(res.data.data)
+                navigate('/')
             }
         } catch (error) {
             console.log(error)

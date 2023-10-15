@@ -1,11 +1,14 @@
 import { useRoutes } from "react-router-dom";
 import {
-  Forget,
+  AddProduct,
+  AllProducts,
   Blog,
   Blogs,
   Cart,
   CheckOut,
   Dashboard,
+  Find,
+  Forget,
   Home,
   Layout,
   MyOders,
@@ -21,10 +24,10 @@ import {
   SignIn,
   SignUp,
   TrackOrder,
+  UpdateProduct,
   UpdateProfile,
   Users,
   Verification,
-  Find
 } from "./pages/Index";
 
 function App() {
@@ -128,7 +131,19 @@ function App() {
         {
           path: "/admin/orders/:id",
           element: <Order />,
-        }
+        },
+        {
+          path: "/admin/product/add",
+          element: <AddProduct />,
+        },
+        {
+          path: "/admin/product/update/:id",
+          element: <UpdateProduct />,
+        },
+        {
+          path: "/admin/product/all",
+          element: <AllProducts />,
+        },
       ]
     },
   ]);

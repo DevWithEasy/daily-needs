@@ -1,62 +1,64 @@
 import { Document } from "mongoose";
 
 interface IUser extends Document {
-    name: string;
-    email: string;
-    image: string;
-    password: string;
-    isVerified: Boolean;
-    orders: string[];
+    name: string
+    email: string
+    image: string
+    password: string
+    isVerified: boolean
+    orders: string[]
     address: {
-        area: string;
-        postOfice: string;
-        upazilla: string;
-        district: string;
+        area: string
+        postOfice: string
+        upazilla: string
+        district: string
     };
 }
 
 interface IProduct extends Document {
-    name: string;
-    sku: string;
-    price: number;
-    stock: number;
-    description: string;
-    additionalInfo: string;
-    comments: string[];
+    category : string
+    name: string
+    sku: string
+    price: number
+    stock: number
+    image : string
+    description: string
+    additionalInfo: string
+    comments: string[]
 }
 
 interface ICategory extends Document {
-    name: string;
+    name: string
 }
 
 interface IComment extends Document {
-    user: string;
-    comment: string;
-    replies: string[];
+    user: string
+    comment: string
+    replies: string[]
 }
 
 interface IOrder extends Document {
-    name: string;
-    bill: Number;
-    charge: Number;
+    name: string
+    bill: number
+    charge: number
     products: {
-        quantity: Number;
-        product: string;
+        quantity: number
+        product: string
     }[];
     status: {
-        date: string;
-        status: string;
+        date: string
+        status: string
     }[];
 }
 
 interface IReply extends Document {
-    user: string;
-    comment: string;
+    user: string
+    comment: string
 }
 
 interface IVerification extends Document {
-    user: string;
-    code: string;
+    user: string
+    code: string
     expire : number
 }
 
