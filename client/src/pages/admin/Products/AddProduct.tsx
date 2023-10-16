@@ -1,74 +1,151 @@
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
-import { formats, modules } from '../../../utils/editorsConfig';
+import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import { formats, modules } from "../../../utils/editorsConfig";
+import axios from "axios";
+import apiUrl from "../../../utils/apiUrl";
 const AddProduct = () => {
   const [product, setProduct] = useState({
-    category: '',
-    name: '',
-    price: '',
-    sku: ''
-  })
-  const [description,setDescription] = useState('')
-  const [additionalInfo,setAdditionalInfo] = useState('')
+    category: "",
+    name: "",
+    price: "",
+    sku: "",
+  });
+  const [description, setDescription] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
+  const [file,setFile] = useState<File | null> (null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setProduct((prevVelue) => ({
       ...prevVelue,
       [name]: value,
     }));
+  }
+
+  const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+    }
   };
-  console.log(product,description,additionalInfo)
-  return <div>
-    <div>
-      <input
-        name='name'
-        onChange={handleChange}
-        placeholder='Product name'
-        className='w-full p-2 border focus:border focus:outline-green-400 rounded'
-      />
-      <input
-        name='price'
-        onChange={handleChange}
-        placeholder='Product price'
-        className='w-full p-2 border focus:border focus:outline-green-400 rounded'
-      />
-      <select
-        name='name'
-        onChange={handleChange}
-        className='w-full p-2 border focus:border focus:outline-green-400 rounded'
-      >
-        <option> select category </option>
-      </select>
-      <select
-        name='name'
-        onChange={handleChange}
-        className='w-full p-2 border focus:border focus:outline-green-400 rounded'
-      >
-        <option> select category </option>
-      </select>
-      <div>
-        <ReactQuill 
-          theme="snow"
-          modules={modules}
-          formats={formats}
-          value={description} 
-          onChange={setDescription}
-          className='h-[250px]'
-        />
-      </div>
-      <div>
-        <ReactQuill 
-          theme="snow"
-          modules={modules}
-          formats={formats}
-          value={additionalInfo} 
-          onChange={setAdditionalInfo}
-          className='h-[250px]'
-        />
+  const handleAddProduct=async()=>{
+    if(!product.category || !product.name || !product.sku || !product.price){
+      return alert('field required')
+    }
+    if(!file){
+      return alert('file required')
+    }
+    const formData = new FormData();
+    formData.append('file', file)
+    formData.append('name', product.name)
+    formData.append('price', product.price)
+    formData.append('category', product.category)
+    formData.append('sku', product.sku)
+    formData.append('description', description)
+    formData.append('additionalInfo', additionalInfo)
+    try {
+      const res = await axios.post(`${apiUrl}/product`, formData)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // console.log(product, description, additionalInfo);
+  return (
+    <div className="my-5 border rounded-md">
+      <h2 className="p-2 text-center bg-green-600 text-white rounded-t-md">
+        Create new product
+      </h2>
+      <div className="p-2 space-y-2">
+        <div className="grid grid-cols-2 space-x-3">
+          <div className="space-y-2">
+            <label>Product Name : </label>
+            <input
+              name="name"
+              type="text"
+              onChange={handleChange}
+              placeholder="Product name"
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            />
+          </div>
+          <div className="space-y-2">
+            <label>Product price : </label>
+            <input
+              name="price"
+              type="number"
+              onChange={handleChange}
+              placeholder="Product price"
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 space-x-3">
+          <div className="space-y-2">
+            <label>Product sku : </label>
+            <select
+              name="sku"
+              onChange={handleChange}
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            >
+              <option> select category </option>
+              <option value='sku1'> sku1 </option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label>Product category : </label>
+            <select
+              name="category"
+              onChange={handleChange}
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            >
+              <option> select category </option>
+              <option value='cat1'> cat1 </option>
+            </select>
+          </div>
+        </div>
+
+        <div className="space-y-2 pb-10">
+          <label>Product Description : </label>
+          <ReactQuill
+            theme="snow"
+            modules={modules}
+            formats={formats}
+            value={description}
+            onChange={setDescription}
+            className="h-[250px]"
+          />
+        </div>
+        <div className="space-y-2 pb-10">
+          <label>Product Additinal Info : </label>
+          <ReactQuill
+            theme="snow"
+            modules={modules}
+            formats={formats}
+            value={additionalInfo}
+            onChange={setAdditionalInfo}
+            className="h-[250px]"
+          />
+        </div>
+        <div className="space-y-2">
+          <label>Product image : </label>
+          <input
+            name="price"
+            type="file"
+            onChange={handleFile}
+            placeholder="Product price"
+            className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+          />
+        </div>
+        <button 
+          onClick={handleAddProduct}
+          className="px-6 py-2 bg-green-600 text-white rounded"
+        >
+          Submit
+        </button>
       </div>
     </div>
-  </div>;
+  );
 };
 
 export default AddProduct;

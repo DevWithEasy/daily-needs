@@ -3,7 +3,10 @@ import { Document } from "mongoose";
 interface IUser extends Document {
     name: string
     email: string
-    image: string
+    image: {
+        url? : string
+        public_id? : string
+    }
     password: string
     isVerified: boolean
     orders: string[]
@@ -21,7 +24,10 @@ interface IProduct extends Document {
     sku: string
     price: number
     stock: number
-    image : string
+    image: {
+        url? : string
+        public_id? : string
+    }
     description: string
     additionalInfo: string
     comments: string[]

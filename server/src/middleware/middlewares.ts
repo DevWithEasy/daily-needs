@@ -3,7 +3,7 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 
 const middlewares = [
-    express.urlencoded({extended: false}),
+    express.urlencoded({extended: true}),
     express.json(),
     cors(),
     morgan('dev'),
