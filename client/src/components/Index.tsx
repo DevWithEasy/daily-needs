@@ -1,8 +1,9 @@
 import Footer from "./Footer";
 import Header from "./Header";
 import Input from "./Input";
+import Loading from "./Loading";
 import LoginModal from "./LoginModal";
 import ProductCard from "./ProductCard";
 import Slider from "./Slider";
 
-export { Footer, Header, LoginModal, ProductCard, Slider,Input };
+export { Footer, Header, Input, Loading, LoginModal, ProductCard, Slider };
