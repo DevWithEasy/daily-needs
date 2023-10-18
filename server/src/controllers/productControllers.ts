@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { NextFunction, Request, Response } from "express";
 import Product from "../models/Product";
 import AppError from "../utils/AppError";
+import Category from "../models/Category";
 
 export const createProduct = async (
     req: Request,
@@ -23,6 +24,12 @@ export const createProduct = async (
 
         const product = await newProduct.save();
 
+        await Category.updateOne({_id : req.body.type},{
+            $push : {
+                typeItems : product._id
+            }
+        })
+
         res.json({
             success: true,
             status: 200,
@@ -40,21 +47,32 @@ export const updateProduct = async (
     next: NextFunction
 ) => {
     try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: "ecommerce/products",
-        });
+        const findProduct = await Product.findById(req.params.id)
+        const updateDoc = {
+            'name': req.body.name,
+            'price': req.body.price,
+            'sku': req.body.sku,
+            'category': req.body.category,
+            'description': req.body.description,
+            'additionalInfo': req.body.description
+        };
 
         let product;
 
         if (!req.file) {
-            product = await Product.findByIdAndUpdate(req.params.id, {
-                name: req.body.name,
-                price: req.body.price,
-                sku: req.body.sku,
-                category: req.body.category,
-                description: req.body.description,
-                additionalInfo: req.body.description,
-            });
+            product = await Product.findByIdAndUpdate(req.params.id,updateDoc,{new : true});
+        }else{
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "ecommerce/products",
+            })
+            if(result){
+                await cloudinary.uploader.destroy(findProduct.image.public_id)
+                product = await Product.findByIdAndUpdate(req.params.id,{
+                    ...updateDoc,
+                    'image.url' : result.url,
+                    'image.public_id' : result.public_id
+                })
+            }
         }
 
         res.json({
@@ -74,25 +92,14 @@ export const deleteProduct = async (
     next: NextFunction
 ) => {
     try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: "ecommerce/products",
-        });
 
-        const newProduct = new Product({
-            ...req.body,
-            image: {
-                url: result.url,
-                public_id: result.public_id,
-            },
-        });
-
-        const product = await newProduct.save();
+        const product = await Product.findByIdAndDelete(req.params.id)
 
         res.json({
             success: true,
             status: 200,
-            message: "Successfully product create.",
-            data: product,
+            message: "Successfully product delete.",
+            data: {},
         });
     } catch (error) {
         next(new AppError(500, error.message));
@@ -105,12 +112,12 @@ export const getSingleProduct = async (
     next: NextFunction
 ) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate('category')
 
         res.json({
             success: true,
             status: 200,
-            message: "Successfully product create.",
+            message: "Successfully product retrived.",
             data: product,
         });
     } catch (error) {
@@ -124,13 +131,13 @@ export const getAllProduct = async (
     next: NextFunction
 ) => {
     try {
-        const product = await Product.find();
+        const products = await Product.find().populate('category');
 
         res.json({
             success: true,
             status: 200,
             message: "Successfully product create.",
-            data: product,
+            data: products,
         });
     } catch (error) {
         next(new AppError(500, error.message));
@@ -143,20 +150,24 @@ export const getProductByCategory = async (
     next: NextFunction
 ) => {
     try {
-        const product = await Product.find({ category: req.params.id });
+        const products = await Product.find({ category: req.params.id }).populate('category')
 
         res.json({
             success: true,
             status: 200,
             message: "Successfully product create.",
-            data: product,
+            data: products,
         });
     } catch (error) {
         next(new AppError(500, error.message));
     }
 };
 
-export const findProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const findProduct = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const product = await Product.find({ category: req.params.id });
 

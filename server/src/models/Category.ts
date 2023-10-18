@@ -13,6 +13,10 @@ const categorySchema = new mongoose.Schema(
             required: true,
             enum: ["product", "blog"],
         },
+        typeItems : {
+            type : Array,
+            default : []
+        }
     },
     {
         timestamps: true,
