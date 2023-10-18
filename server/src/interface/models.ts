@@ -35,6 +35,7 @@ interface IProduct extends Document {
 
 interface ICategory extends Document {
     name: string
+    type : string
 }
 
 interface IComment extends Document {

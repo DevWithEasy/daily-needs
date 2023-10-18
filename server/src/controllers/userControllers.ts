@@ -14,7 +14,11 @@ import {
 } from "../utils/emailTemplateUtils";
 import verifyCode from "../utils/verifyCode";
 
-const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signup = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const hashed = await bcrypt.hash(req.body.password, 10);
 
@@ -57,7 +61,11 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const signin = async (req: Request, res: Response, next: NextFunction) => {
+export const signin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const user = await User.findOne({
             $or: [{ email: req.body.email }, { phone: req.body.email }],
@@ -82,7 +90,11 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const user = await User.findById(req.params.id);
         return res.json({
@@ -96,7 +108,7 @@ const getProfile = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const updateProfile = async (
+export const updateProfile = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -122,7 +134,11 @@ const updateProfile = async (
     }
 };
 
-const findAccount = async (req: Request, res: Response, next: NextFunction) => {
+export const findAccount = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { q } = req.query;
 
@@ -144,7 +160,7 @@ const findAccount = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const verifyAccount = async (
+export const verifyAccount = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -188,7 +204,7 @@ const verifyAccount = async (
     }
 };
 
-const verifyCodeSendAgain = async (
+export const verifyCodeSendAgain = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -234,7 +250,7 @@ const verifyCodeSendAgain = async (
     }
 };
 
-const forgetAccount = async (
+export const forgetAccount = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -265,7 +281,7 @@ const forgetAccount = async (
             });
         }
 
-        transporter.sendMail(ForgetPassword(user.email,token,code), (err) => {
+        transporter.sendMail(ForgetPassword(user.email, token, code), (err) => {
             if (err) {
                 next(new AppError(500, err.message));
             } else {
@@ -277,19 +293,18 @@ const forgetAccount = async (
                 });
             }
         });
-
     } catch (error) {
         next(new AppError(500, error.message));
     }
 };
 
-const changePassword = async (
+export const changePassword = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        console.log(req.user,req.body)
+        console.log(req.user, req.body);
         const user = await User.findById(req.user);
         const findCode = await Verification.findOne({ user: req.user });
 
@@ -303,7 +318,7 @@ const changePassword = async (
             return next(new AppError(404, "Verification code not Found."));
         }
 
-        const hashed = await bcrypt.hash(req.body.password,10)
+        const hashed = await bcrypt.hash(req.body.password, 10);
 
         await User.findByIdAndUpdate(user._id, {
             $set: {
@@ -330,7 +345,7 @@ const changePassword = async (
     }
 };
 
-const changeEmailAccount = async (
+export const changeEmailAccount = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -346,7 +361,7 @@ const changeEmailAccount = async (
     }
 };
 
-const changePhoneAccount = async (
+export const changePhoneAccount = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -362,7 +377,7 @@ const changePhoneAccount = async (
     }
 };
 
-const changeImageAccount = async (
+export const changeImageAccount = async (
     req: IAuthRequest,
     res: Response,
     next: NextFunction
@@ -376,19 +391,4 @@ const changeImageAccount = async (
     } catch (error) {
         next(new AppError(500, error.message));
     }
-};
-
-export {
-    changePassword,
-    changeEmailAccount,
-    changeImageAccount,
-    changePhoneAccount,
-    findAccount,
-    forgetAccount,
-    getProfile,
-    signin,
-    signup,
-    updateProfile,
-    verifyAccount,
-    verifyCodeSendAgain,
 };

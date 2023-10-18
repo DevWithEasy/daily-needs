@@ -1,11 +1,87 @@
-import { Router } from 'express';
-import { } from '../controllers/userControllers';
+import { NextFunction, Request, Response } from "express";
+import AppError from "../utils/AppError";
 
-const blogRouter = Router()
+export const createBlog = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.json({
+            success: true,
+            status: 200,
+            message: "Successfully product create.",
+            data: "",
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
 
-blogRouter.post('/', )
-    .post('/', )
-    .get('/',)
-    .post('/',)
+export const updateBlog = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.json({
+            success: true,
+            status: 200,
+            message: "Successfully product create.",
+            data: "",
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
 
-export default blogRouter
+export const deleteBlog = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.json({
+            success: true,
+            status: 200,
+            message: "Successfully product create.",
+            data: "",
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
+
+export const getBlog = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.json({
+            success: true,
+            status: 200,
+            message: "Successfully product create.",
+            data: "",
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
+
+export const getAllBlog = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.json({
+            success: true,
+            status: 200,
+            message: "Successfully product create.",
+            data: "",
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};

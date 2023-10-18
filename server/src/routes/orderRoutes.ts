@@ -1,11 +1,22 @@
-import { Router } from 'express';
-import { } from '../controllers/userControllers';
+import { Router } from "express";
+import {
+    createOrder,
+    deleteOrder,
+    getAllOrder,
+    getAllOrderByUser,
+    getOrder,
+    updateOrder,
+} from "../controllers/orderControllers";
+import authenticated from "../middleware/authentication";
 
-const orderRouter = Router()
+const orderRouter = Router();
 
-orderRouter.post('/', )
-    .post('/', )
-    .get('/',)
-    .post('/',)
+orderRouter
+    .post("/", authenticated, createOrder)
+    .put("/:id", authenticated, updateOrder)
+    .delete("/:id", deleteOrder)
+    .get("/:id", getOrder)
+    .get("/", getAllOrder)
+    .get("/user/:id", getAllOrderByUser);
 
-export default orderRouter
+export default orderRouter;
