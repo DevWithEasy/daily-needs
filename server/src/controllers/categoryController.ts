@@ -83,7 +83,14 @@ export const getAllCategory = async (
     next: NextFunction
 ) => {
     try {
-        const categories = await Category.find().populate('typeItems')
+        let categories
+
+        if(req.query.type){
+            categories = await Category.find({type : req.query.type}).select('name')
+        }else{
+            categories = await Category.find().populate('typeItems')
+        }
+
         res.json({
             success: true,
             status: 200,

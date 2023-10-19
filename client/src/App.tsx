@@ -14,7 +14,6 @@ import {
   MyOders,
   Offers,
   Order,
-  OrderStatus,
   Orders,
   Outlet,
   Outlets,
@@ -75,10 +74,6 @@ function App() {
         {
           path: "/checkout",
           element: <CheckOut />,
-        },
-        {
-          path: "/order_status",
-          element: <OrderStatus />,
         },
         {
           path: "/outlets",

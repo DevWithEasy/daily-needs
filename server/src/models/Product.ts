@@ -1,14 +1,18 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import { IProduct } from "../interface/models";
 
 const productSchema = new mongoose.Schema({
     category: {
         type: mongoose.Types.ObjectId,
-        ref: 'ProductCategory',
+        ref: 'Category',
     },
     name: {
         type: String,
         required: true,
+    },
+    quantity : {
+        type : Number,
+        required: true
     },
     sku : {
         type : String,
@@ -32,12 +36,10 @@ const productSchema = new mongoose.Schema({
         default : 0
     },
     description : {
-        type : String,
-        required: true
+        type : String
     },
     additionalInfo : {
-        type : String,
-        required: true
+        type : String
     },
     comments :{
         type : [

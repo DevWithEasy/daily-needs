@@ -5,6 +5,7 @@ import orderRouter from "./orderRoutes"
 import productRouter from "./productRoutes"
 import replyRouter from "./replyRoutes"
 import userRouter from "./userRoutes"
+import categoryRouter from "./categoryRouter"
 
 type handlerType = (req : Request,res : Response) =>void;
 
@@ -15,6 +16,10 @@ const routes : {
     {
         path : '/api/user',
         handler : userRouter
+    },
+    {
+        path : '/api/category',
+        handler : categoryRouter
     },
     {
         path : '/api/product',

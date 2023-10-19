@@ -8,13 +8,13 @@ import {
 } from "../controllers/categoryController";
 import authenticated from "../middleware/authentication";
 
-const productRouter = Router();
+const categoryRouter = Router();
 
-productRouter
-    .post("/category", authenticated, createCategory)
-    .put("/category/:id", authenticated, updateCategory)
-    .delete("/category/:id", authenticated, deleteCategory)
-    .get("/category/:id", getCategory)
-    .get("/category", getAllCategory);
+categoryRouter
+    .post("/", authenticated, createCategory)
+    .put("/:id", authenticated, updateCategory)
+    .delete("/:id", authenticated, deleteCategory)
+    .get("/:id", getCategory)
+    .get("/", getAllCategory);
 
-export default productRouter;
+export default categoryRouter;

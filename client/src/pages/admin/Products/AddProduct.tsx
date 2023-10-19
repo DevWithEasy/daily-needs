@@ -1,18 +1,21 @@
-import React, { useState } from "react";
-import ReactQuill from "react-quill";
-import { formats, modules } from "../../../utils/editorsConfig";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
+import { formats, modules } from "../../../utils/editorsConfig";
 const AddProduct = () => {
+  const [categories, setCategories] = useState<CategoriesType[] | null>(null);
   const [product, setProduct] = useState({
     category: "",
     name: "",
     price: "",
+    quantity: "",
     sku: "",
   });
   const [description, setDescription] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
-  const [file,setFile] = useState<File | null> (null)
+  const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -22,36 +25,52 @@ const AddProduct = () => {
       ...prevVelue,
       [name]: value,
     }));
-  }
+  };
 
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
     }
   };
-  const handleAddProduct=async()=>{
-    if(!product.category || !product.name || !product.sku || !product.price){
-      return alert('field required')
+  const handleAddProduct = async () => {
+    if (!product.category || !product.name || !product.sku || !product.price) {
+      return alert("field required");
     }
-    if(!file){
-      return alert('file required')
+    if (!file) {
+      return alert("file required");
     }
     const formData = new FormData();
-    formData.append('file', file)
-    formData.append('name', product.name)
-    formData.append('price', product.price)
-    formData.append('category', product.category)
-    formData.append('sku', product.sku)
-    formData.append('description', description)
-    formData.append('additionalInfo', additionalInfo)
+    formData.append("file", file);
+    formData.append("name", product.name);
+    formData.append("price", product.price);
+    formData.append("category", product.category);
+    formData.append("quantity", product.quantity);
+    formData.append("sku", product.sku);
+    formData.append("description", description);
+    formData.append("additionalInfo", additionalInfo);
     try {
-      const res = await axios.post(`${apiUrl}/product`, formData)
-      console.log(res.data)
+      const res = await axios.post(`${apiUrl}/product/`, formData);
+      console.log(res.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  // console.log(product, description, additionalInfo);
+  };
+
+  useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const res = await axios.get(`${apiUrl}/category?type=product`);
+        if (res.data.success) {
+          setCategories(res.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategory();
+  }, []);
+
+  console.log(product);
   return (
     <div className="my-5 border rounded-md">
       <h2 className="p-2 text-center bg-green-600 text-white rounded-t-md">
@@ -80,7 +99,17 @@ const AddProduct = () => {
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 space-x-3">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <label>SKU Quantity : </label>
+            <input
+              name="quantity"
+              type="number"
+              onChange={handleChange}
+              placeholder="SKU Quantity"
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            />
+          </div>
           <div className="space-y-2">
             <label>Product sku : </label>
             <select
@@ -89,7 +118,9 @@ const AddProduct = () => {
               className="w-full p-2 border focus:border focus:outline-green-400 rounded"
             >
               <option> select category </option>
-              <option value='sku1'> sku1 </option>
+              <option value="Pcs"> Pcs </option>
+              <option value="Gm"> Gm </option>
+              <option value="Kg"> Kg </option>
             </select>
           </div>
           <div className="space-y-2">
@@ -100,7 +131,13 @@ const AddProduct = () => {
               className="w-full p-2 border focus:border focus:outline-green-400 rounded"
             >
               <option> select category </option>
-              <option value='cat1'> cat1 </option>
+              {categories &&
+                categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {" "}
+                    {category.name}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -137,7 +174,7 @@ const AddProduct = () => {
             className="w-full p-2 border focus:border focus:outline-green-400 rounded"
           />
         </div>
-        <button 
+        <button
           onClick={handleAddProduct}
           className="px-6 py-2 bg-green-600 text-white rounded"
         >

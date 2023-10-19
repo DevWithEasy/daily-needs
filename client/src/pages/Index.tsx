@@ -1,3 +1,6 @@
+import AddCategory from "../components/admin/AddCategory";
+import DeleteCategory from "../components/admin/DeleteCategory";
+import UpdateCategory from "../components/admin/UpdateCategory";
 import Blog from "./Blog";
 import Blogs from "./Blogs";
 import Cart from "./Cart";
@@ -23,13 +26,11 @@ import UpdateProduct from "./admin/Products/UpdateProduct";
 import Users from "./admin/Users";
 import MyOders from "./users/MyOders";
 import Profile from "./users/Profile";
-import {
-    default as OrderStatus,
-    default as TrackOrder,
-} from "./users/TrackOrder";
+import TrackOrder from "./users/TrackOrder";
 import UpdateProfile from "./users/UpdateProfile";
 
 export {
+    AddCategory,
     AddProduct,
     AllProducts,
     Blog,
@@ -37,6 +38,7 @@ export {
     Cart,
     CheckOut,
     Dashboard,
+    DeleteCategory,
     Find,
     Forget,
     Home,
@@ -44,7 +46,6 @@ export {
     MyOders,
     Offers,
     Order,
-    OrderStatus,
     Orders,
     Outlet,
     Outlets,
@@ -54,6 +55,7 @@ export {
     SignIn,
     SignUp,
     TrackOrder,
+    UpdateCategory,
     UpdateProduct,
     UpdateProfile,
     Users,

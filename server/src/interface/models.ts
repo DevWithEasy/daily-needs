@@ -21,6 +21,7 @@ export interface IUser extends Document {
 export interface IProduct extends Document {
     category: string
     name: string
+    quantity : number
     sku: string
     price: number
     stock: number
