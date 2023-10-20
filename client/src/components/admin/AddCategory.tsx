@@ -48,9 +48,9 @@ const AddCategory = ({ view, handleView }: CategoryProps) => {
       <Modal isOpen={view} onClose={handleView}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Add new Category</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody className="space-y-2">
             <Input
               {...{
                 label: "Name",

@@ -12,7 +12,7 @@ import { useState } from "react";
 import CategoryProps from "../../types/category.types";
 import { Input } from "../Index";
 
-const UpdateCategory = ({ view, handleView }: CategoryProps) => {
+const UpdateCategory = ({id, view, handleView }: CategoryProps) => {
   const [category, setCategory] = useState({
     name: "",
     type: "",
@@ -27,7 +27,7 @@ const UpdateCategory = ({ view, handleView }: CategoryProps) => {
       [name]: value,
     }));
   };
-  console.log(category);
+  console.log(category,id);
   return (
     <>
       <Modal isOpen={view} onClose={handleView}>

@@ -5,5 +5,6 @@ import Loading from "./Loading";
 import LoginModal from "./LoginModal";
 import ProductCard from "./ProductCard";
 import Slider from "./Slider";
+import UpdateCategory from "./admin/UpdateCategory";
 
-export { Footer, Header, Input, Loading, LoginModal, ProductCard, Slider };
+export { UpdateCategory,Footer, Header, Input, Loading, LoginModal, ProductCard, Slider };

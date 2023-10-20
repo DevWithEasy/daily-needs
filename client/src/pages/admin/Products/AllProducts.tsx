@@ -9,22 +9,15 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import ProductType from "../../../types/product.types";
 import apiUrl from "../../../utils/apiUrl";
+import { useNavigate } from "react-router-dom";
 
 const AllProducts = () => {
-  const [updateView,setUpdateView] = useState(false)
-  const [deleteView,setDeleteView] = useState(false)
-  const [id,setId] = useState('')
-  const [products, setProducts] = useState<ProductType[] | null>(null)
-  const handleUpdateView=(id : string)=>{
-    setUpdateView(!updateView)
-    setId(id)
-  }
-  const handleDeleteView=(id : string)=>{
-    setDeleteView(!deleteView)
-    setId(id)
-  }
+  const navigate = useNavigate()
+  const [products, setProducts] = useState<ProductType[] | null>(null);
+
   const handleGetAllProducts = async () => {
     try {
       const res = await axios.get(`${apiUrl}/product`);
@@ -40,7 +33,6 @@ const AllProducts = () => {
     handleGetAllProducts();
   }, []);
 
-  console.log(products);
   return (
     <div>
       <TableContainer>
@@ -56,16 +48,31 @@ const AllProducts = () => {
           </Thead>
           <Tbody>
             {products &&
-              products.map(product =>
+              products.map((product) => (
                 <Tr key={product._id}>
                   <Td>{product.name}</Td>
                   <Td>{product.price}</Td>
-                  <Td>{product.quantity}({product.sku})</Td>
+                  <Td>
+                    {product.quantity}({product.sku})
+                  </Td>
                   <Td>{product.stock}</Td>
-                  <Td></Td>
+                  <Td>
+                    <AiFillEdit
+                      onClick={() => navigate(`/product/update/${product._id}`)}
+                      size={22}
+                      className="inline-block mr-3"
+                    />
+                    {/* <AiTwotoneDelete
+                      onClick={() => {
+                        setId(product._id);
+                        handleDeleteView;
+                      }}
+                      size={22}
+                      className="inline-block"
+                    /> */}
+                  </Td>
                 </Tr>
-              )
-            }
+              ))}
           </Tbody>
         </Table>
       </TableContainer>

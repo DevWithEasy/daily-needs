@@ -1,6 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import {
   AddProduct,
+  AllCategory,
   AllProducts,
   Blog,
   Blogs,
@@ -108,36 +109,40 @@ function App() {
           element: <MyOders />,
         },
         {
-          path: "/account/orders/track/:id",
+          path: "/orders/track/:id",
           element: <TrackOrder />,
         },
         {
-          path: "/admin/dashboard",
+          path: "/dashboard",
           element: <Dashboard />,
         },
         {
-          path: "/admin/users",
+          path: "/users",
           element: <Users />,
         },
         {
-          path: "/admin/orders",
+          path: "/orders",
           element: <Orders />,
         },
         {
-          path: "/admin/orders/:id",
+          path: "/orders/:id",
           element: <Order />,
         },
         {
-          path: "/admin/product/add",
+          path: "/product/add",
           element: <AddProduct />,
         },
         {
-          path: "/admin/product/update/:id",
+          path: "/product/update/:id",
           element: <UpdateProduct />,
         },
         {
-          path: "/admin/product/all",
+          path: "/product/all",
           element: <AllProducts />,
+        },
+        {
+          path: "/category/all",
+          element: <AllCategory />,
         },
       ]
     },

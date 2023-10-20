@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AddCategory } from "../Index";
 
 const Dashboard = () => {
 const [addView,setAddView] = useState(false)
@@ -9,11 +8,11 @@ const handleAddView=() : void=>{
   return <div>
     <button onClick={handleAddView}>Add Category</button>
     {
-      addView && 
-      <AddCategory {...{
-        view : addView,
-        handleView : handleAddView
-      }}/>
+      // addView && 
+      // <AddCategory {...{
+      //   view : addView,
+      //   handleView : handleAddView
+      // }}/>
     }
   </div>;
 };
