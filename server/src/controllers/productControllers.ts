@@ -101,7 +101,11 @@ export const deleteProduct = async (
     next: NextFunction
 ) => {
     try {
-        await Product.findByIdAndDelete(req.params.id);
+        const product = await Product.findById(req.params.id)
+
+        await Product.findByIdAndDelete(req.params.id)
+
+        await cloudinary.uploader.destroy(product.image.public_id)
 
         res.json({
             success: true,

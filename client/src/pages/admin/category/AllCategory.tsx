@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
-import { UpdateCategory } from "../../../components/Index";
+import { UpdateCategory, DeleteModal } from "../../../components/Index";
 
 const AllCategory = () => {
     const [updateView, setUpdateView] = useState(false);
@@ -20,13 +20,11 @@ const AllCategory = () => {
     const [id, setId] = useState("");
     const [categories, setCategories] = useState<CategoriesType[] | null>(null);
 
-    const handleUpdateView = (id: string) => {
+    const handleUpdateView = () => {
         setUpdateView(!updateView);
-        setId(id);
     };
-    const handleDeleteView = (id: string) => {
+    const handleDeleteView = () => {
         setDeleteView(!deleteView);
-        setId(id);
     };
 
     const handleGetAllCategories = async () => {
@@ -44,7 +42,6 @@ const AllCategory = () => {
         handleGetAllCategories();
     }, []);
 
-    console.log(id, updateView);
     return (
         <div>
             <TableContainer>
@@ -61,17 +58,23 @@ const AllCategory = () => {
                             categories.map((category) => (
                                 <Tr key={category._id}>
                                     <Td>{category.name}</Td>
-                                    <Td>{category.type}</Td>
+                                    <Td>{category.type === 'blog' ? 'Blog' : 'Product'}</Td>
                                     <Td>
                                         <AiFillEdit
-                                            onClick={() => handleUpdateView(category._id)}
+                                            onClick={() => {
+                                                handleUpdateView()
+                                                setId(category._id)
+                                            }}
                                             size={22}
-                                            className="inline-block mr-3"
+                                            className="inline-block mr-3 hover:text-green-500"
                                         />
                                         <AiTwotoneDelete
-                                            onClick={() => handleDeleteView(category._id)}
+                                            onClick={() => {
+                                                handleDeleteView()
+                                                setId(category._id)
+                                            }}
                                             size={22}
-                                            className="inline-block"
+                                            className="inline-block hover:text-red-500"
                                         />
                                     </Td>
                                 </Tr>
@@ -84,7 +87,17 @@ const AllCategory = () => {
                     {...{
                         id: id,
                         view: updateView,
-                        handleView: setUpdateView,
+                        handleView: handleUpdateView,
+                    }}
+                />
+            )}
+            {deleteView && (
+                <DeleteModal
+                    {...{
+                        path : 'category',
+                        id: id,
+                        view: deleteView,
+                        handleView: handleDeleteView,
                     }}
                 />
             )}

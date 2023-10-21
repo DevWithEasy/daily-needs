@@ -4,7 +4,11 @@ import ReactQuill from "react-quill";
 import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
 import { formats, modules } from "../../../utils/editorsConfig";
+import {Loading} from "../../../components/Index";
+import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoriesType[] | null>(null);
   const [product, setProduct] = useState({
     category: "",
@@ -48,11 +52,16 @@ const AddProduct = () => {
     formData.append("sku", product.sku);
     formData.append("description", description);
     formData.append("additionalInfo", additionalInfo);
+    setLoading(true)
     try {
       const res = await axios.post(`${apiUrl}/product/`, formData);
-      console.log(res.data);
+      if(res.data.success){
+        navigate('/product/all')
+        setLoading(false)
+      }
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -70,7 +79,6 @@ const AddProduct = () => {
     getCategory();
   }, []);
 
-  console.log(product);
   return (
     <div className="my-5 border rounded-md">
       <h2 className="p-2 text-center bg-green-600 text-white rounded-t-md">
@@ -181,6 +189,7 @@ const AddProduct = () => {
           Submit
         </button>
       </div>
+      {loading && <Loading />}
     </div>
   );
 };

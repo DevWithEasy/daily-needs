@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Loading } from "../../../components/Index";
 import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
 import { formats, modules } from "../../../utils/editorsConfig";
 
 const UpdateProduct = () => {
+  const navigate = useNavigate()
   const { id } = useParams();
   const [categories, setCategories] = useState<CategoriesType[] | null>(null);
   const [product, setProduct] = useState({
@@ -51,11 +52,18 @@ const UpdateProduct = () => {
     formData.append("sku", product.sku);
     formData.append("description", description);
     formData.append("additionalInfo", additionalInfo);
+    setLoading(true);
     try {
       const res = await axios.put(`${apiUrl}/product/${id}`, formData);
-      console.log(res.data);
+      if(res.data.success){
+        console.log(res.data);
+        setLoading(false);
+        navigate('/product/all')
+      }
+      
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -68,7 +76,7 @@ const UpdateProduct = () => {
           name,
           category,
           price,
-          quntity,
+          quantity,
           sku,
           description,
           additionalInfo,
@@ -77,13 +85,14 @@ const UpdateProduct = () => {
           name: name,
           category: category._id,
           price: price,
-          quantity: quntity,
+          quantity: quantity,
           sku: sku,
         });
         setDescription(description);
         setAdditionalInfo(additionalInfo);
         setLoading(false);
       }
+      console.log(res.data.data)
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -105,7 +114,6 @@ const UpdateProduct = () => {
     getCategory();
   }, [id]);
 
-  console.log(product);
   return (
     <div className="my-5 border rounded-md">
       <h2 className="p-2 text-center bg-green-600 text-white rounded-t-md">

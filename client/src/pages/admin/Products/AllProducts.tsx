@@ -13,10 +13,16 @@ import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import ProductType from "../../../types/product.types";
 import apiUrl from "../../../utils/apiUrl";
 import { useNavigate } from "react-router-dom";
+import { DeleteModal } from "../../../components/Index";
 
 const AllProducts = () => {
   const navigate = useNavigate()
+  const [deleteView, setDeleteView] = useState(false);
+  const [id, setId] = useState("");
   const [products, setProducts] = useState<ProductType[] | null>(null);
+  const handleDeleteView = () => {
+    setDeleteView(!deleteView);
+  };
 
   const handleGetAllProducts = async () => {
     try {
@@ -60,22 +66,32 @@ const AllProducts = () => {
                     <AiFillEdit
                       onClick={() => navigate(`/product/update/${product._id}`)}
                       size={22}
-                      className="inline-block mr-3"
+                      className="inline-block mr-3 hover:text-green-500"
                     />
-                    {/* <AiTwotoneDelete
+                    <AiTwotoneDelete
                       onClick={() => {
                         setId(product._id);
-                        handleDeleteView;
+                        handleDeleteView();
                       }}
                       size={22}
-                      className="inline-block"
-                    /> */}
+                      className="inline-block hover:text-red-500"
+                    />
                   </Td>
                 </Tr>
               ))}
           </Tbody>
         </Table>
       </TableContainer>
+      {deleteView && (
+        <DeleteModal
+          {...{
+            path : 'product',
+            id: id,
+            view: deleteView,
+            handleView: handleDeleteView,
+          }}
+        />
+      )}
     </div>
   );
 };
