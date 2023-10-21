@@ -54,6 +54,7 @@ export const updateProduct = async (
             quantity : req.body.quantity,
             sku: req.body.sku,
             category: req.body.category,
+            stock: req.body.stock,
             description: req.body.description,
             additionalInfo: req.body.description,
         };

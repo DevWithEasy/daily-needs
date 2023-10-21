@@ -5,7 +5,7 @@ import CheckOut from "./CheckOut";
 import Find from "./Find";
 import Forget from "./Forget";
 import Home from "./Home";
-import Layout from "./Layout";
+import UserLayout from "./UserLayout";
 import Offers from "./Offers";
 import Outlet from "./Outlet";
 import Outlets from "./Outlets";
@@ -26,8 +26,16 @@ import MyOders from "./users/MyOders";
 import Profile from "./users/Profile";
 import TrackOrder from "./users/TrackOrder";
 import UpdateProfile from "./users/UpdateProfile";
+import AdminLayout from "./AdminLayout";
+import Protected from "./Protected";
+import AddCategory from "./admin/category/AddCategory";
+import UpdateCategory from "./admin/category/UpdateCategory";
 
 export {
+    UpdateCategory,
+    AddCategory,
+    Protected,
+    AdminLayout,
     AllCategory,
     AddProduct,
     AllProducts,
@@ -39,7 +47,7 @@ export {
     Find,
     Forget,
     Home,
-    Layout,
+    UserLayout,
     MyOders,
     Offers,
     Order,

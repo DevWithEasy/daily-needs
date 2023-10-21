@@ -16,6 +16,7 @@ const AddProduct = () => {
     price: "",
     quantity: "",
     sku: "",
+    stock : ""
   });
   const [description, setDescription] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -50,6 +51,7 @@ const AddProduct = () => {
     formData.append("category", product.category);
     formData.append("quantity", product.quantity);
     formData.append("sku", product.sku);
+    formData.append("stock", product.stock);
     formData.append("description", description);
     formData.append("additionalInfo", additionalInfo);
     setLoading(true)
@@ -147,6 +149,16 @@ const AddProduct = () => {
                   </option>
                 ))}
             </select>
+          </div>
+          <div className="space-y-2">
+            <label>Stock Quantity : </label>
+            <input
+              name="stock"
+              type="number"
+              onChange={handleChange}
+              placeholder="Stock Quantity"
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            />
           </div>
         </div>
 

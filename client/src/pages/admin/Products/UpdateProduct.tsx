@@ -17,6 +17,7 @@ const UpdateProduct = () => {
     price: "",
     quantity: "",
     sku: "",
+    stock: ""
   });
   const [description, setDescription] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -50,6 +51,7 @@ const UpdateProduct = () => {
     formData.append("category", product.category);
     formData.append("quantity", product.quantity);
     formData.append("sku", product.sku);
+    formData.append("stock", product.stock);
     formData.append("description", description);
     formData.append("additionalInfo", additionalInfo);
     setLoading(true);
@@ -78,6 +80,7 @@ const UpdateProduct = () => {
           price,
           quantity,
           sku,
+          stock,
           description,
           additionalInfo,
         } = res.data.data;
@@ -87,6 +90,7 @@ const UpdateProduct = () => {
           price: price,
           quantity: quantity,
           sku: sku,
+          stock : stock
         });
         setDescription(description);
         setAdditionalInfo(additionalInfo);
@@ -185,6 +189,17 @@ const UpdateProduct = () => {
                   </option>
                 ))}
             </select>
+          </div>
+          <div className="space-y-2">
+            <label>Stock Quantity : </label>
+            <input
+              name="stock"
+              type="number"
+              value={product.stock}
+              onChange={handleChange}
+              placeholder="Stock Quantity"
+              className="w-full p-2 border focus:border focus:outline-green-400 rounded"
+            />
           </div>
         </div>
 
