@@ -2,9 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Input, Loading } from "../../../components/Index";
 import apiUrl from "../../../utils/apiUrl";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateCategory = () => {
+  const navigate = useNavigate()
   const {id} = useParams()
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState({
@@ -23,6 +24,7 @@ const UpdateCategory = () => {
   };
 
   const handleUpdate = async () => {
+    setLoading(true)
     try {
       const res = await axios.put(`${apiUrl}/category/${id}`, category, {
         headers: {
@@ -30,15 +32,17 @@ const UpdateCategory = () => {
         },
       });
       if (res.data.success) {
-        console.log("");
+        setLoading(false)
+        navigate('/categories')
       }
     } catch (error) {
-      console.log("");
+      console.log("")
+      setLoading(false)
     }
   };
 
   const getCategory = async (id: string) => {
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await axios.get(`${apiUrl}/category/${id}`);
       if (res.data.success === true) {
@@ -60,8 +64,9 @@ const UpdateCategory = () => {
   }, [id]);
 
   return (
-    <div>
-      <div>
+    <div className='space-y-3'>
+      <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl uppercase'>Update Category</h1>
+      <div className="space-y-3">
         <Input
           {...{
             label: "Name",

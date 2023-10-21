@@ -82,11 +82,9 @@ const AddProduct = () => {
   }, []);
 
   return (
-    <div className="my-5 border rounded-md">
-      <h2 className="p-2 text-center bg-green-600 text-white rounded-t-md">
-        Create new product
-      </h2>
-      <div className="p-2 space-y-2">
+    <div className="">
+      <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl uppercase'>Add new product</h1>
+      <div className="p-4 space-y-2">
         <div className="grid grid-cols-2 space-x-3">
           <div className="space-y-2">
             <label>Product Name : </label>

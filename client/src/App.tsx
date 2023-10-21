@@ -283,7 +283,7 @@ function App() {
           }
         />
         <Route
-          path="/categories/add"
+          path="/category/add"
           element={
             <Protected>
               <AdminLayout>
@@ -293,7 +293,7 @@ function App() {
           }
         />
         <Route
-          path="/categories/update/:id"
+          path="/category/update/:id"
           element={
             <Protected>
               <AdminLayout>

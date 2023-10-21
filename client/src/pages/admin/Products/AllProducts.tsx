@@ -40,10 +40,11 @@ const AllProducts = () => {
   }, []);
 
   return (
-    <div>
-      <TableContainer>
+    <div className="space-y-3">
+      <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl uppercase'>All products</h1>
+      <TableContainer className="p-4">
         <Table variant="simple">
-          <Thead>
+          <Thead className="bg-gray-100">
             <Tr>
               <Th>Product Name</Th>
               <Th>Price</Th>
@@ -64,7 +65,7 @@ const AllProducts = () => {
                   <Td>{product.stock}</Td>
                   <Td>
                     <AiFillEdit
-                      onClick={() => navigate(`/product/update/${product._id}`)}
+                      onClick={() => navigate(`/products/update/${product._id}`)}
                       size={22}
                       className="inline-block mr-3 hover:text-green-500"
                     />

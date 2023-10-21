@@ -1,28 +1,18 @@
-import {
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-} from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Th, Thead, Tr, } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
-import { UpdateCategory, DeleteModal } from "../../../components/Index";
+import { DeleteModal } from "../../../components/Index";
+import { useNavigate } from "react-router-dom";
 
 const AllCategory = () => {
-    const [updateView, setUpdateView] = useState(false);
+    const navigate = useNavigate()
     const [deleteView, setDeleteView] = useState(false);
     const [id, setId] = useState("");
     const [categories, setCategories] = useState<CategoriesType[] | null>(null);
 
-    const handleUpdateView = () => {
-        setUpdateView(!updateView);
-    };
     const handleDeleteView = () => {
         setDeleteView(!deleteView);
     };
@@ -43,10 +33,11 @@ const AllCategory = () => {
     }, []);
 
     return (
-        <div>
-            <TableContainer>
+        <div className="space-y-3">
+            <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl uppercase'>All categories</h1>
+            <TableContainer className="p-4">
                 <Table variant="simple">
-                    <Thead>
+                    <Thead className="bg-gray-100">
                         <Tr>
                             <Th>Category Name</Th>
                             <Th>Category Type</Th>
@@ -61,10 +52,7 @@ const AllCategory = () => {
                                     <Td>{category.type === 'blog' ? 'Blog' : 'Product'}</Td>
                                     <Td>
                                         <AiFillEdit
-                                            onClick={() => {
-                                                handleUpdateView()
-                                                setId(category._id)
-                                            }}
+                                            onClick={() => navigate(`/category/update/${category._id}`)}
                                             size={22}
                                             className="inline-block mr-3 hover:text-green-500"
                                         />
@@ -82,19 +70,10 @@ const AllCategory = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
-            {updateView && (
-                <UpdateCategory
-                    {...{
-                        id: id,
-                        view: updateView,
-                        handleView: handleUpdateView,
-                    }}
-                />
-            )}
             {deleteView && (
                 <DeleteModal
                     {...{
-                        path : 'category',
+                        path: 'category',
                         id: id,
                         view: deleteView,
                         handleView: handleDeleteView,

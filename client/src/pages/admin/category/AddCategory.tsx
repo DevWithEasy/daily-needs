@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Input } from "../../../components/Index";
 import apiUrl from "../../../utils/apiUrl";
+import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
+  const navigate = useNavigate()
   const [category, setCategory] = useState({
     name: "",
     type: "",
@@ -19,6 +21,9 @@ const AddCategory = () => {
     }));
   };
   const handleCreateCategory = async () => {
+    if(!category.name || !category.type){
+      return alert('Add all field')
+    }
     try {
       const res = await axios.post(`${apiUrl}/category/`, category, {
         headers: {
@@ -26,7 +31,7 @@ const AddCategory = () => {
         },
       });
       if (res.data.success) {
-        console.log(res.data)
+        navigate('/categories')
       }
     } catch (error) {
       console.log(error);
@@ -35,6 +40,8 @@ const AddCategory = () => {
 
   return (
     <div className="space-y-2">
+      <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl uppercase'>Add new Category</h1>
+      <div className="p-4 space-y-2">
       <Input
         {...{
           label: "Name",
@@ -61,6 +68,7 @@ const AddCategory = () => {
         >
           Submit
         </button>
+      </div>
     </div>
   );
 };

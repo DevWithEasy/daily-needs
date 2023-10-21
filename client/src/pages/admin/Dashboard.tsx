@@ -1,20 +1,10 @@
-import { useState } from "react";
-
 const Dashboard = () => {
-const [addView,setAddView] = useState(false)
-const handleAddView=() : void=>{
-  setAddView(!addView)
-}
-  return <div>
-    <button onClick={handleAddView}>Add Category</button>
-    {
-      // addView && 
-      // <AddCategory {...{
-      //   view : addView,
-      //   handleView : handleAddView
-      // }}/>
-    }
-  </div>;
+
+  return (
+    <div>
+    <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl'>DASHBOARD</h1>
+  </div>
+  );
 };
 
 export default Dashboard;

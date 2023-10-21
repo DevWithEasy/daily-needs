@@ -15,7 +15,7 @@ const Header = () => {
           <div className="w-9/12 flex justify-between items-center">
             <div className="space-x-4">
               <Link
-                to="/home"
+                to="/"
                 className="uppercase font-semibold px-2 hover:text-green-600"
               >
                 Home
