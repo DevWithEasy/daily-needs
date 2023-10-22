@@ -9,6 +9,7 @@ export interface IUser extends Document {
     }
     password: string
     isVerified: boolean
+    isAdmin : boolean
     orders: string[]
     address: {
         area: string
