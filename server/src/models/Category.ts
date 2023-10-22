@@ -13,10 +13,10 @@ const categorySchema = new mongoose.Schema(
             required: true,
             enum: ["product", "blog"],
         },
-        typeItems : {
-            type : Array,
-            default : []
-        }
+        typeItems: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        }]
     },
     {
         timestamps: true,

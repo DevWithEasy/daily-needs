@@ -4,19 +4,19 @@ type ProductType = {
         _id : string
         name: string
         type: string
-        typeItems: string[]
+        typeItems?: string[]
     }
     name: string
     quantity : number
     sku: string
     price: number
-    stock: number
+    stock?: number
     image: {
         url?: string
         public_id?: string
     }
-    description: string
-    additionalInfo: string
-    comments: string[]  
+    description?: string
+    additionalInfo?: string
+    comments?: string[]  
 }
 export default ProductType

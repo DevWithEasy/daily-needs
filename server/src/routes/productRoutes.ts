@@ -1,8 +1,9 @@
-import { Router } from "express";
+import { Response, Router } from "express";
 import {
     createProduct,
     deleteProduct,
     findProduct,
+    getAllHomeProduct,
     getAllProduct,
     getProductByCategory,
     getSingleProduct,
@@ -18,7 +19,8 @@ productRouter
     .delete("/:id", deleteProduct)
     .get("/:id", getSingleProduct)
     .get("/", getAllProduct)
+    .get("/find/home", getAllHomeProduct)
     .get("/category/:id", getProductByCategory)
-    .get("/find/product", findProduct);
+    .get("/find/product", findProduct)
 
 export default productRouter;

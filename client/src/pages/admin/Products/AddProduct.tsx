@@ -58,7 +58,7 @@ const AddProduct = () => {
     try {
       const res = await axios.post(`${apiUrl}/product/`, formData);
       if(res.data.success){
-        navigate('/product/all')
+        navigate('/products/all')
         setLoading(false)
       }
     } catch (error) {

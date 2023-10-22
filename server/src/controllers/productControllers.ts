@@ -196,3 +196,22 @@ export const findProduct = async (
         next(new AppError(500, error.message));
     }
 };
+
+export const getAllHomeProduct = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const products = await Category.find({type : 'product'}).populate('typeItems','name image price sku quantity')
+
+        res.json({
+            success: true,
+            status: 200,
+            message: "Successfully product create.",
+            data: products,
+        });
+    } catch (error) {
+        next(new AppError(500, error.message));
+    }
+};
