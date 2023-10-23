@@ -1,20 +1,5 @@
 import {create} from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { UserTypes } from './store.types';
-import CategoriesType from '../types/categories.types';
-
-type UserStoreType = {
-    status : 'start' | 'success' | 'failure'
-    loading : boolean
-    isAuth : boolean
-    categories : CategoriesType[]
-    setLogin : ()=> void
-    setLogout : ()=> void
-    setLoading : ()=> void
-    setCategories : ()=> void
-    removeCategory : ()=> void
-    setStatus : ()=> void
-}
 
 const userStore = (set)=>({
     status : 'start',
@@ -22,7 +7,7 @@ const userStore = (set)=>({
     isAuth : false,
     categories : [],
     user : {},
-    setLogin :(data : UserTypes)=>{
+    setLogin :(data)=>{
         set(()=>({
             isAuth : true,
             user : data
@@ -35,7 +20,7 @@ const userStore = (set)=>({
         }))
     },
     setLoading : ()=>{
-        set((state : UserStoreType)=>{
+        set((state)=>{
             if(state.loading){
                 return {loading : false}
             }else{
@@ -43,17 +28,17 @@ const userStore = (set)=>({
             }
         })
     },
-    setCategories :(data : CategoriesType[])=>{
+    setCategories :(data)=>{
         set(()=>({
             categories : data
         }))
     },
-    removeCategory :(id : string)=>{
-        set((state : UserStoreType)=>({
+    removeCategory :(id)=>{
+        set((state)=>({
             categories : [...state.categories.filter(c => c._id === id)]
         }))
     },
-    setStatus :(status : string)=>{
+    setStatus :(status)=>{
         set(()=>({
             status : status
         }))

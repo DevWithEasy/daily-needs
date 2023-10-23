@@ -1,4 +1,5 @@
-import ProductCardType from "../types/ProductCard.types";
+import { ProductCardType } from "../types/product.types";
+
 
 type ProductCardProps ={
   key : string,

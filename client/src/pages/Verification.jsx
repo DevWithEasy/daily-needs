@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../components/Index";
 import apiUrl from "../utils/apiUrl";
 import axios from "axios";
@@ -9,14 +9,14 @@ const Verification = () => {
     const [value, setValue] = useState({
         code: "",
     });
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setValue((prevVelue) => ({
             ...prevVelue,
             [name]: value,
         }));
     };
-    const handleVerify = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    const handleVerify = async (e) => {
         e.preventDefault()
         try {
             const res = await axios.put(`${apiUrl}/user/verify`, value, {

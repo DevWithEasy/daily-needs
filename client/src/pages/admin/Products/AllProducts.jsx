@@ -10,16 +10,15 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
-import ProductType from "../../../types/product.types";
 import apiUrl from "../../../utils/apiUrl";
 import { useNavigate } from "react-router-dom";
-import { DeleteModal, Loading } from "../../../components/Index";
+import { DeleteModal } from "../../../components/Index";
 
 const AllProducts = () => {
   const navigate = useNavigate()
   const [deleteView, setDeleteView] = useState(false);
   const [id, setId] = useState("");
-  const [products, setProducts] = useState<ProductType[] | null>(null);
+  const [products, setProducts] = useState([]);
   const handleDeleteView = () => {
     setDeleteView(!deleteView);
   };

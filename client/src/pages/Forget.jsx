@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams,useNavigate } from "react-router-dom";
 import apiUrl from "../utils/apiUrl";
 import { Input } from "../components/Index";
@@ -12,7 +12,7 @@ const Forget = () => {
         confirmPassword: ''
     })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setValue((prevVelue) => ({
             ...prevVelue,
@@ -20,7 +20,7 @@ const Forget = () => {
         }));
     };
 
-    const handleReset = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    const handleReset = async (e) => {
         e.preventDefault()
         try {
             const res = await axios.put(`${apiUrl}/user/reset_password`, { ...value, code }, {
