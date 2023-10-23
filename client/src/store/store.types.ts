@@ -15,3 +15,38 @@ export type UserTypes = {
         district: string
     }
 }
+
+export type ProductTypes = {
+    _id : string
+    category: string
+    name: string
+    quantity : number
+    sku: string
+    price: number
+    stock: number
+    image: {
+        url?: string
+        public_id?: string
+    }
+    description: string
+    additionalInfo: string
+    comments: string[]
+}
+
+export type CartProductTypes = {
+    _id : string
+    category: string
+    name: string
+    quantity : number
+    sku: string
+    price: number
+    stock: number
+    image: {
+        url?: string
+        public_id?: string
+    }
+    description: string
+    additionalInfo: string
+    comments: string[]
+    buyQuantity : number
+}

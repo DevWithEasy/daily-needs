@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Input } from "../../../components/Index";
+import { Input, Loading } from "../../../components/Index";
 import apiUrl from "../../../utils/apiUrl";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../../../store/userStore";
 
 const AddCategory = () => {
+  const {setStatus,loading, setLoading} = useUserStore()
   const navigate = useNavigate()
   const [category, setCategory] = useState({
     name: "",
@@ -24,6 +26,7 @@ const AddCategory = () => {
     if(!category.name || !category.type){
       return alert('Add all field')
     }
+    setLoading()
     try {
       const res = await axios.post(`${apiUrl}/category/`, category, {
         headers: {
@@ -31,10 +34,20 @@ const AddCategory = () => {
         },
       });
       if (res.data.success) {
-        navigate('/categories')
+        setStatus('success')
+        setTimeout(()=>{
+          setLoading()
+          navigate('/categories')
+          setStatus('start')
+        },1500)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      setStatus('failure')
+      setTimeout(()=>{
+        setLoading()
+        setStatus('start')
+      },1500)
     }
   };
 
@@ -69,6 +82,7 @@ const AddCategory = () => {
           Submit
         </button>
       </div>
+      {loading && <Loading/>}
     </div>
   );
 };

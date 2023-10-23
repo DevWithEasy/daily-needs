@@ -1,7 +1,7 @@
 type CategoryProps = {
     path? : string
     id? : string
-    view : boolean,
+    view : boolean
     handleView : ()=>void
 }
 

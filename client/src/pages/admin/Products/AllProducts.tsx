@@ -13,7 +13,7 @@ import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import ProductType from "../../../types/product.types";
 import apiUrl from "../../../utils/apiUrl";
 import { useNavigate } from "react-router-dom";
-import { DeleteModal } from "../../../components/Index";
+import { DeleteModal, Loading } from "../../../components/Index";
 
 const AllProducts = () => {
   const navigate = useNavigate()

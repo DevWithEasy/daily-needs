@@ -10,26 +10,33 @@ import {
 import CategoryProps from "../types/category.types";
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
-import { useState } from "react";
-import {Loading} from "./Index";
+import useUserStore from "../store/userStore";
 
-const DeleteModal = ({ path , id, view, handleView }: CategoryProps) => {
-    const [loading, setLoading] = useState(false);
-    const handleDelete=async()=>{
-        setLoading(true)
+const DeleteModal = ({ path, id, view, handleView }: CategoryProps) => {
+    const { setLoading, setStatus } = useUserStore()
+    const handleDelete = async () => {
+        setLoading()
+        handleView()
         try {
-            const res = await axios.delete(`${apiUrl}/${path}/${id}`,{
-                headers : {
-                    authorization : 'Bearer ' + localStorage.getItem('token')
+            const res = await axios.delete(`${apiUrl}/${path}/${id}`, {
+                headers: {
+                    authorization: 'Bearer ' + localStorage.getItem('token')
                 }
             })
-            if(res.data.success){
-                console.log('')
-                setLoading(false)
+            if (res.data.success) {
+                setStatus('success')
+                setTimeout(() => {
+                    setLoading()
+                    setStatus('start')
+                }, 1500)
             }
         } catch (error) {
             console.log('')
-            setLoading(false)
+            setStatus('failure')
+            setTimeout(() => {
+                setLoading()
+                setStatus('start')
+            }, 1500)
         }
     }
     return (
@@ -46,7 +53,7 @@ const DeleteModal = ({ path , id, view, handleView }: CategoryProps) => {
                     </ModalBody>
 
                     <ModalFooter className="space-x-3">
-                        <button 
+                        <button
                             onClick={handleView}
                             className="px-4 py-2 bg-gray-300 rounded"
                         >
@@ -61,7 +68,6 @@ const DeleteModal = ({ path , id, view, handleView }: CategoryProps) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            {loading && <Loading />}
         </>
     );
 };

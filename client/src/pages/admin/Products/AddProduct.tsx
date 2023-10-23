@@ -6,9 +6,10 @@ import apiUrl from "../../../utils/apiUrl";
 import { formats, modules } from "../../../utils/editorsConfig";
 import {Loading} from "../../../components/Index";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../../../store/userStore";
 const AddProduct = () => {
+  const {setStatus,loading, setLoading} = useUserStore()
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoriesType[] | null>(null);
   const [product, setProduct] = useState({
     category: "",
@@ -54,16 +55,24 @@ const AddProduct = () => {
     formData.append("stock", product.stock);
     formData.append("description", description);
     formData.append("additionalInfo", additionalInfo);
-    setLoading(true)
+    setLoading()
     try {
       const res = await axios.post(`${apiUrl}/product/`, formData);
       if(res.data.success){
-        navigate('/products/all')
-        setLoading(false)
+        setStatus('success')
+        setTimeout(()=>{
+          setLoading()
+          navigate('/product/all')
+          setStatus('start')
+        },1500)
       }
     } catch (error) {
       console.log(error);
-      setLoading(false)
+      setStatus('failure')
+      setTimeout(()=>{
+        setLoading()
+        setStatus('start')
+      },1500)
     }
   };
 

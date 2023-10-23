@@ -9,6 +9,7 @@ const AdminLayout = ({ children }: React.PropsWithChildren) => {
                 className='h-screen w-3/12 pl-4 overflow-y-auto space-y-3'
             >
                 <div>
+                    <p className='border-b p-2 font-bold text-2xl text-center'>Daily Needs</p>
                     <p className='bg-gray-300 border-b p-2 font-bold'>Main</p>
                     <NavLink
                         to='/dashboard'

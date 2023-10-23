@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import ProductType from "../types/product.types";
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
+import {ProductCard} from "../components/Index";
+import ProductCardType from "../types/ProductCard.types";
 // import CategorySlide from "../components/home/CategorySlide";
 // import HomeSlider from "../components/home/HomeSlider";
 
 const Home = () => {
-  const [products,setProducts] = useState<ProductType[] | null>(null)
+  const [products,setProducts] = useState<ProductCardType[] | null>(null)
 
   const getHomeProducts=async()=>{
     try {
@@ -26,6 +27,11 @@ const Home = () => {
   return <div>
     {/* <HomeSlider/>
     <CategorySlide/> */}
+    {products &&
+      products.map(product =>
+        <ProductCard key={product._id} {...{product}}/>
+      )
+    }
   </div>;
 };
 

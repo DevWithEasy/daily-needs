@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { Input, Loading } from "../../../components/Index";
 import apiUrl from "../../../utils/apiUrl";
 import { useNavigate, useParams } from "react-router-dom";
+import useUserStore from "../../../store/userStore";
 
 const UpdateCategory = () => {
+  const {setStatus,loading, setLoading} = useUserStore()
   const navigate = useNavigate()
   const {id} = useParams()
-  const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState({
     name: "",
     type: "",
@@ -24,7 +25,7 @@ const UpdateCategory = () => {
   };
 
   const handleUpdate = async () => {
-    setLoading(true)
+    setLoading()
     try {
       const res = await axios.put(`${apiUrl}/category/${id}`, category, {
         headers: {
@@ -32,17 +33,25 @@ const UpdateCategory = () => {
         },
       });
       if (res.data.success) {
-        setLoading(false)
-        navigate('/categories')
+        setStatus('success')
+        setTimeout(()=>{
+          setLoading()
+          navigate('/categories')
+          setStatus('start')
+        },1500)
       }
     } catch (error) {
       console.log("")
-      setLoading(false)
+      setStatus('failure')
+      setTimeout(()=>{
+        setLoading()
+        setStatus('start')
+      },1500)
     }
   };
 
   const getCategory = async (id: string) => {
-    setLoading(true)
+    setLoading()
     try {
       const res = await axios.get(`${apiUrl}/category/${id}`);
       if (res.data.success === true) {
@@ -51,22 +60,23 @@ const UpdateCategory = () => {
           name: name,
           type: type,
         });
-        setLoading(false);
+        setLoading();
       }
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setLoading();
     }
   };
 
   useEffect(() => {
     id && getCategory(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
     <div className='space-y-3'>
       <h1 className='py-2 bg-green-600 text-white text-center font-bold text-2xl uppercase'>Update Category</h1>
-      <div className="space-y-3">
+      <div className="p-4 space-y-3">
         <Input
           {...{
             label: "Name",

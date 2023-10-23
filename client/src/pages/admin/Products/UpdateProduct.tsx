@@ -6,8 +6,10 @@ import { Loading } from "../../../components/Index";
 import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
 import { formats, modules } from "../../../utils/editorsConfig";
+import useUserStore from "../../../store/userStore";
 
 const UpdateProduct = () => {
+  const {setStatus,loading, setLoading} = useUserStore()
   const navigate = useNavigate()
   const { id } = useParams();
   const [categories, setCategories] = useState<CategoriesType[] | null>(null);
@@ -22,7 +24,6 @@ const UpdateProduct = () => {
   const [description, setDescription] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -54,23 +55,31 @@ const UpdateProduct = () => {
     formData.append("stock", product.stock);
     formData.append("description", description);
     formData.append("additionalInfo", additionalInfo);
-    setLoading(true);
+    setLoading();
     try {
       const res = await axios.put(`${apiUrl}/product/${id}`, formData);
       if(res.data.success){
-        console.log(res.data);
-        setLoading(false);
-        navigate('/products/all')
+        console.log(res.data)
+        setStatus('success')
+        setTimeout(()=>{
+          setLoading()
+          navigate('/products/all')
+          setStatus('start')
+        },1500)
       }
       
     } catch (error) {
-      console.log(error);
-      setLoading(false);
+      console.log(error)
+      setStatus('failure')
+      setTimeout(()=>{
+        setLoading()
+        setStatus('start')
+      },1500)
     }
   };
 
   const getProduct = async (id: string) => {
-    setLoading(true);
+    setLoading();
     try {
       const res = await axios.get(`${apiUrl}/product/${id}`);
       if (res.data.success === true) {
@@ -94,12 +103,12 @@ const UpdateProduct = () => {
         });
         setDescription(description);
         setAdditionalInfo(additionalInfo);
-        setLoading(false);
+        setLoading();
       }
       console.log(res.data.data)
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setLoading();
     }
   };
   const getCategory = async () => {
@@ -116,6 +125,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     id && getProduct(id);
     getCategory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
