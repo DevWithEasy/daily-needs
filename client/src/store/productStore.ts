@@ -1,19 +1,29 @@
 import {create} from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { CartProductTypes, ProductTypes } from './store.types';
+
+type ProductStore = {
+    cart : CartProductTypes[]
+    products : []
+    setProduct : ()=>void
+    setAddCart : ()=>void
+    setRemoveCart : ()=>void
+    setAdjustCart : ()=>void
+}
 
 const productStore = (set)=>({
     cart : [],
     products : [],
-    setProducts : (data)=>{
+    setProducts : (data : ProductTypes[])=>{
 
         set(()=>({
             products : data
         }))
         
     },
-    setAddCart :(product)=>{
+    setAddCart :(product : ProductTypes)=>{
 
-        set((state)=>{
+        set((state :ProductStore)=>{
             const inCart = state.cart.find(item=>item._id === product._id ? true : false)
             if (inCart){
                 return {cart : state.cart.map(item => item._id === product._id ? {...item,buyQuantity : item.buyQuantity+1} : item)}
@@ -23,16 +33,16 @@ const productStore = (set)=>({
         })
 
     },
-    setRemoveCart :(id)=>{
+    setRemoveCart :(id : string)=>{
 
-        set((state)=>({
+        set((state :ProductStore)=>({
             cart : [state.cart.filter(item=>item._id !== id)]
         }))
 
     },
-    setAdjustCart :(id, qty)=>{
+    setAdjustCart :(id : string, qty : number)=>{
 
-        set((state)=>({
+        set((state :ProductStore)=>({
             cart : [state.cart.map(item=>item._id === id ? {...item,buyQuantity : qty} : item)]
         }))
 

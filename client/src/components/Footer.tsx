@@ -79,7 +79,7 @@ const Footer = () => {
               <Link to="">Privacy Policy</Link>
               <Link to="">Refund Policy</Link>
               <Link to="">Delivary Policy</Link>
-              <Link to="">Faqs</Link>
+              <Link to="">Faq's</Link>
               <Link to="">About Us</Link>
               <Link to="">Contact Us</Link>
               <Link to="">Career</Link>

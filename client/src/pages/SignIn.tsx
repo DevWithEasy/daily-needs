@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Input } from "../components/Index";
 import apiUrl from "../utils/apiUrl";
 import {useNavigate } from 'react-router-dom'
@@ -10,14 +10,14 @@ const SignIn = () => {
     password: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValue((prevVelue) => ({
       ...prevVelue,
       [name]: value,
     }));
   };
-  const handleSignIn = async (e) => {
+  const handleSignIn = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${apiUrl}/user/signin`, value);

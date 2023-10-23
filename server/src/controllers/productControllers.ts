@@ -204,9 +204,7 @@ export const getAllHomeProduct = async (
 ) => {
     try {
 
-        const categories = await Category.find({type : 'product'})
-
-        const products = await Product.find({type : 'product'}).populate('typeItems','name image price sku quantity')
+        const products = await Category.find({type : 'product'}).populate('typeItems','name image price sku quantity')
 
         res.json({
             success: true,

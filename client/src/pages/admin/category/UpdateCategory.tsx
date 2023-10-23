@@ -14,7 +14,9 @@ const UpdateCategory = () => {
     type: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setCategory((prevVelue) => ({
       ...prevVelue,
@@ -48,7 +50,7 @@ const UpdateCategory = () => {
     }
   };
 
-  const getCategory = async (id) => {
+  const getCategory = async (id: string) => {
     setLoading()
     try {
       const res = await axios.get(`${apiUrl}/category/${id}`);

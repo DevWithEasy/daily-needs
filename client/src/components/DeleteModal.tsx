@@ -7,12 +7,12 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/react";
+import CategoryProps from "../types/category.types";
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
 import useUserStore from "../store/userStore";
 
-// eslint-disable-next-line react/prop-types
-const DeleteModal = ({ path, id, view, handleView }) => {
+const DeleteModal = ({ path, id, view, handleView }: CategoryProps) => {
     const { setLoading, setStatus } = useUserStore()
     const handleDelete = async () => {
         setLoading()

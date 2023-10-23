@@ -24,9 +24,19 @@ const Home = () => {
   useEffect(() => {
     getHomeProducts()
   }, [])
+
+  const spices = products.find(product=>product.name === 'Honey')?.typeItems
+
+  console.log(products)
   
   return <div>
-    
+    <div
+      className="grid grid-cols-5 gap-2"
+    >
+      {
+        spices && spices.map(product=> <ProductCard key={product._id} {...{product}}/>)
+      }
+    </div>
   </div>;
 };
 
