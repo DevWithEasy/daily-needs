@@ -1,7 +1,9 @@
+import HomeProductSectionSkeleton from "../components/skeleton/HomeProductSectionSkeleton";
+
 const Products = () => {
     return (
-        <div>
-            
+        <div className="">
+            <HomeProductSectionSkeleton/>
         </div>
     );
 };

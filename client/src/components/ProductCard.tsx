@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useProductStore from "../store/productStore"
 import { ProductCardType } from "../types/product.types"
 
@@ -17,9 +18,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <img src={product?.image?.url} className="h-[200px]" />
       </div>
       <div className="p-2 space-y-3 text-center">
-        <p>
+        <Link to={`/product/${product._id}`}>
           {product?.name}
-        </p>
+        </Link>
         <p className="space-x-2">
           <span className="px-6 py-1 bg-green-200 text-green-900 rounded-full">
             ৳-{product.price}

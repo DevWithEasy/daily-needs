@@ -4,9 +4,24 @@ import { BsFacebook, BsYoutube, BsLinkedin, BsCart2 } from "react-icons/bs";
 import { AiFillInstagram, AiOutlineMenu } from "react-icons/ai";
 import { BiDownArrow, BiSearch } from "react-icons/bi";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
+import {LoginModal} from "./Index";
+import { useState } from "react";
+import useProductStore from "../store/productStore";
+import { CartProductTypes } from "../store/store.types";
+import CategoryDrawer from "./CategoryDrawer";
 const Header = () => {
+  const {cart} = useProductStore()
+  const [view, setView] = useState(false)
+  const [drawerView, setDrawerView] = useState(false)
+  const handleView = () => {
+    setView(!view);
+  };
+  const handleDrawerView = () => {
+    setDrawerView(!drawerView);
+  };
+  const total = cart.reduce((acc: number, cur: CartProductTypes) => acc + cur.price * cur.buyQuantity, 0)
   return (
-    <div className="pt-2 border-b-2 shadow">
+    <div className="sticky top-0 pt-2 bg-white border-b-2 shadow">
       <div className="w-11/12 mx-auto">
         <div className="flex items-center">
           <div className="w-3/12">
@@ -66,17 +81,26 @@ const Header = () => {
         </div>
         <div className="flex items-center mb-[2px] space-x-2">
           <div className="w-3/12">
-            <div className="w-full p-2 flex items-center justify-between uppercase group bg-green-600 text-white cursor-pointer">
-              <div className="flex items-center space-x-2">
+            <div
+              onClick={handleDrawerView}
+              className="w-full p-2 flex items-center justify-between bg-green-600 text-white cursor-pointer"
+            >
+              <div className="relative flex items-center space-x-2">
                 <AiOutlineMenu size={22} />
-                <span>Browse Categories</span>
+                <span className="uppercase">Browse Categories</span>
               </div>
-              <BiDownArrow className="group-hover:rotate-180 group-hover:transition-all group-hover:dutation-500" />
+              <BiDownArrow className={`${drawerView && 'rotate-180'}`} />
+              {drawerView &&
+                  <CategoryDrawer {...{
+                    view : drawerView,
+                    handleView : handleDrawerView
+                  }}/>
+              }
             </div>
           </div>
           <div className="w-9/12 flex items-center space-x-4">
             <Link
-              to=""
+              to="/offers"
               className="w-28 px-4 py-2 flex items-center uppercase bg-gray-200 hover:bg-yellow-600 hover:text-white"
             >
               <HiOutlineSpeakerphone size={20} />
@@ -90,16 +114,24 @@ const Header = () => {
               <BiSearch size={20} className="cursor-pointer" />
             </div>
             <div className="w-96 flex items-center space-x-4">
-              <button className="upprescase">Login/Register</button>
+              <button onClick={handleView} className="upprescase">
+                Login/Register
+              </button>
               <Link to="/cart" className="flex items-center space-x-4">
                 <div className="relative">
                   <BsCart2 size={25} />
                   <span className="flex justify-center items-center w-6 h-6 absolute -right-3 -top-3 bg-green-600 text-xs text-white text-center rounded-full">
-                    5
+                    {cart.length}
                   </span>
                 </div>
-                <span className="text-sm font-medium"> ৳ 120</span>
+                <span className="text-sm font-medium"> ৳ {total}</span>
               </Link>
+              {view &&
+                <LoginModal {...{
+                  view,
+                  handleView
+                }} />
+              }
             </div>
           </div>
         </div>

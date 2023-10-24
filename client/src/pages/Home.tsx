@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
 import { HomeProductSection} from "../components/Index";
+import useProductStore from "../store/productStore";
 import { HomeProductType } from "../types/product.types";
 
 const Home = () => {
-  const [products, setProducts] = useState<HomeProductType[] | []>([])
+  const {products, setProducts} = useProductStore()
 
   const getHomeProducts = async () => {
     try {
@@ -21,12 +22,13 @@ const Home = () => {
   useEffect(() => {
     getHomeProducts()
   }, [])
-
+  
+  console.log(products)
   return <div>
     <div>
       {
         products && 
-        products.map(product =><HomeProductSection
+        products.map((product : HomeProductType) =><HomeProductSection
           key={product._id}
           product={product}
         />)

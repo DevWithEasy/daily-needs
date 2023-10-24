@@ -1,15 +1,15 @@
-// import {Header,Footer} from '../components/Index'
+import {Header,Footer} from '../components/Index'
 import React from "react";
 
 const UserLayout = ({children} : React.PropsWithChildren) => {
   return <>
-    {/* <Header/> */}
+    <Header/>
     <div
       className='w-11/12 mx-auto py-5'
     >
       {children}
     </div>
-    {/* <Footer/> */}
+    <Footer/>
   </>;
 };
 
