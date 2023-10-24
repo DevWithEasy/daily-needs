@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
-import { ProductCard } from "../components/Index";
+import { HomeProductSection} from "../components/Index";
 import { HomeProductType } from "../types/product.types";
-
-// import CategorySlide from "../components/home/CategorySlide";
-// import HomeSlider from "../components/home/HomeSlider";
 
 const Home = () => {
   const [products, setProducts] = useState<HomeProductType[] | []>([])
@@ -25,16 +22,14 @@ const Home = () => {
     getHomeProducts()
   }, [])
 
-  const spices = products.find(product=>product.name === 'Honey')?.typeItems
-
-  console.log(products)
-  
   return <div>
-    <div
-      className="grid grid-cols-5 gap-2"
-    >
+    <div>
       {
-        spices && spices.map(product=> <ProductCard key={product._id} {...{product}}/>)
+        products && 
+        products.map(product =><HomeProductSection
+          key={product._id}
+          product={product}
+        />)
       }
     </div>
   </div>;
