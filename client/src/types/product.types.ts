@@ -1,3 +1,5 @@
+import { UserTypes } from "../store/store.types"
+
 export type ProductType = {
     _id : string
     category: {
@@ -17,7 +19,20 @@ export type ProductType = {
     }
     description?: string
     additionalInfo?: string
-    comments?: string[]  
+    comments?: {
+        _id : string
+        user : UserTypes
+        comment : string
+        createdAt : string 
+        updatedAt : string
+        replies : {
+            _id : string
+            user : UserTypes
+            comment : string
+            createdAt : string 
+            updatedAt : string
+        }[]
+    }[]  
 }
 
 export type ProductCardType = {

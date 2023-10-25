@@ -4,6 +4,7 @@ import apiUrl from "../utils/apiUrl";
 import { HomeProductSection, HomeProductSectionSkeleton } from "../components/Index";
 import useProductStore from "../store/productStore";
 import { HomeCategoryType } from "../types/category.types";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { categories, setCategoies } = useProductStore()
@@ -29,11 +30,21 @@ const Home = () => {
       <div>
         {
           categories &&
-          categories.map((category: HomeCategoryType) => <HomeProductSection
+          categories.slice(0,5).map((category: HomeCategoryType) => <HomeProductSection
             key={category._id}
             category={category}
           />)
         }
+        <div
+          className='pt-5 flex justify-center'
+        >
+          <Link 
+            to='/products'
+            className='px-6 py-2 bg-green-500 text-white rounded'
+          >
+            Browse All Products
+          </Link>
+        </div>
       </div>
       :
       <HomeProductSectionSkeleton />
