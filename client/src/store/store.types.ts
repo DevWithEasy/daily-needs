@@ -1,19 +1,22 @@
 export type UserTypes = {
+    _id  : string
     name: string
     email: string
     image: {
-        url?: string
-        public_id?: string
+        url: string
+        public_id: string
     }
     password: string
     isVerified: boolean
     orders: string[]
     address: {
-        area: string
-        postOfice: string
-        upazilla: string
-        district: string
+        area?: string
+        postOfice?: string
+        upazilla?: string
+        district?: string
     }
+    createdAt : string
+    updatedAt : string
 }
 
 export type ProductTypes = {

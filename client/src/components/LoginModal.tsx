@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "./Index";
 import { Link } from "react-router-dom";
+import useUserStore from "../store/userStore";
 
 type LoginProps = {
   view: boolean
@@ -20,6 +21,7 @@ type LoginProps = {
 }
 
 const LoginModal = ({ view, handleView }: LoginProps) => {
+  const {setLogin} = useUserStore()
   const navigate = useNavigate()
   const [value, setValue] = useState({
     email: "",
@@ -41,9 +43,12 @@ const LoginModal = ({ view, handleView }: LoginProps) => {
       if (res.data.success === true) {
         localStorage.setItem('token', res.data.token)
         if (res.data.data.isVerified === false) {
-          navigate('/verification')
+          handleView()
+          return navigate('/verification')
         }
-        console.log(res.data);
+        setLogin(res.data.data)
+        console.log(res.data.data)
+        handleView()
       }
     } catch (error) {
       console.log(error);
@@ -55,7 +60,7 @@ const LoginModal = ({ view, handleView }: LoginProps) => {
       <Modal isOpen={view} onClose={handleView}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Are you sure?</ModalHeader>
+          <ModalHeader>Sign in</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSignIn} className="p-2 space-y-3">
@@ -88,14 +93,14 @@ const LoginModal = ({ view, handleView }: LoginProps) => {
             <Link
               to='/signup'
               onClick={handleView}
-              className="p-2 w-full bg-yellow-600 text-white text-center rounded uppercase"
+              className="p-2 w-full bg-yellow-500 text-white text-center rounded uppercase"
             >
               Create new account
             </Link>
             <Link
               to='/find'
               onClick={handleView}
-              className="p-2 w-full bg-red-600 text-white text-center rounded uppercase"
+              className="p-2 w-full bg-red-500 text-white text-center rounded uppercase"
             >
               Forget Password
             </Link>

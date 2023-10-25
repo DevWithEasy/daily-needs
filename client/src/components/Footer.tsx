@@ -1,4 +1,3 @@
-import logo from "./../assets/image/logo-white.webp";
 import {
   BsFacebook,
   BsYoutube,
@@ -17,7 +16,7 @@ const Footer = () => {
       <div className="w-11/12 mx-auto">
         <div className="py-5 border-b"></div>
         <div className="p-4 flex flex-col justify-center items-center space-y-2">
-          <img src={logo} alt="" />
+          <span className="text-4xl text-white font-bold border p-2">Daily Needs</span>
           <div className="flex items-center space-x-3 text-white">
             <Link to="">
               <BsFacebook size={20} />

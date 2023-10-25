@@ -30,8 +30,10 @@ import AdminLayout from "./AdminLayout";
 import Protected from "./Protected";
 import AddCategory from "./admin/category/AddCategory";
 import UpdateCategory from "./admin/category/UpdateCategory";
+import ProductsByCategory from "./ProductsByCategory";
 
 export {
+    ProductsByCategory,
     UpdateCategory,
     AddCategory,
     Protected,

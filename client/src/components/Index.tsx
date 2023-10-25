@@ -10,6 +10,8 @@ import Loading from "./Loading";
 import LoginModal from "./LoginModal";
 import ProductCard from "./ProductCard";
 import Slider from "./Slider";
+import HomeProductSectionSkeleton from "./skeleton/HomeProductSectionSkeleton";
+import ProductCardSkeleton from "./skeleton/ProductCardSkeleton";
 
 export {
   EmptyCart,
@@ -23,5 +25,7 @@ export {
   ProductCard,
   Slider,
   UpdateCategory,
-  HomeProductSection
+  HomeProductSection,
+  HomeProductSectionSkeleton,
+  ProductCardSkeleton
 };

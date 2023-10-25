@@ -2,11 +2,11 @@ import { Table, TableContainer, Tbody, Td, Th, Thead, Tr, } from "@chakra-ui/rea
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
-import CategoriesType from "../../../types/categories.types";
 import apiUrl from "../../../utils/apiUrl";
 import { DeleteModal, Loading } from "../../../components/Index";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../../store/userStore";
+import { CategoriesType } from "../../../types/category.types";
 
 const AllCategory = () => {
     const {loading} = useUserStore()

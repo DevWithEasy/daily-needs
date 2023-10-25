@@ -32,6 +32,7 @@ import {
   UserLayout,
   Users,
   Verification,
+  ProductsByCategory,
 } from "./pages/Index";
 
 function App() {
@@ -99,6 +100,14 @@ function App() {
           element={
             <UserLayout>
               <Product />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/category/:id"
+          element={
+            <UserLayout>
+              <ProductsByCategory />
             </UserLayout>
           }
         />

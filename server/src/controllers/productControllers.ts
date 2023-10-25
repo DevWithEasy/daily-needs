@@ -144,12 +144,27 @@ export const getAllProduct = async (
     next: NextFunction
 ) => {
     try {
-        const products = await Product.find().populate("category");
+        const {page} = req.query
+
+        const limit = 15
+
+        const total = await Product.countDocuments()
+
+        const totalPage = Math.ceil(total/15)
+
+        const skip = Number(page) === 0 ? 0 : Number(page) * limit
+
+        const products = await Product.find()
+        .populate("category")
+        .skip(skip)
+        .limit(limit);
 
         res.json({
             success: true,
             status: 200,
             message: "Successfully product create.",
+            total : total,
+            pages : totalPage,
             data: products,
         });
     } catch (error) {

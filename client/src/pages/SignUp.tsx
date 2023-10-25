@@ -25,7 +25,6 @@ const SignUp = () => {
     try {
       const res = await axios.post(`${apiUrl}/user/signup`,value)
       if(res.data.success === true){
-        console.log(res.data.message)
         localStorage.setItem('token',res.data.token)
         navigate('/verification')
       }
@@ -33,8 +32,8 @@ const SignUp = () => {
       console.log(error)
     }
   }
-  return <div className='md:w-1/2 md:mx-auto mx-1 my-10 border rounded-md'>
-    <h2 className='p-2 bg-green-600 text-white text-center text-2xl rounded-t-md'>Create new account</h2>
+  return <div className='md:w-1/2 md:mx-auto mx-1 mb-10 border rounded-md'>
+    <h2 className='p-2 bg-gray-200 text-center text-2xl rounded-t-md'>Create new account</h2>
     <form
       onSubmit={handleSignup}
       className="p-2 space-y-3"

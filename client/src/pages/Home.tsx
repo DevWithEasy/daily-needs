@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import axios from "axios";
 import apiUrl from "../utils/apiUrl";
-import { HomeProductSection} from "../components/Index";
+import { HomeProductSection, HomeProductSectionSkeleton } from "../components/Index";
 import useProductStore from "../store/productStore";
-import { HomeProductType } from "../types/product.types";
+import { HomeCategoryType } from "../types/category.types";
 
 const Home = () => {
-  const {products, setProducts} = useProductStore()
+  const { categories, setCategoies } = useProductStore()
 
   const getHomeProducts = async () => {
     try {
       const res = await axios.get(`${apiUrl}/product/find/home`)
       if (res.data.success) {
-        setProducts(res.data.data)
+        setCategoies(res.data.data)
       }
     } catch (error) {
       console.log(error)
@@ -21,19 +21,24 @@ const Home = () => {
 
   useEffect(() => {
     getHomeProducts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
-  console.log(products)
+
   return <div>
-    <div>
-      {
-        products && 
-        products.map((product : HomeProductType) =><HomeProductSection
-          key={product._id}
-          product={product}
-        />)
-      }
-    </div>
+    {categories.length > 0 ?
+      <div>
+        {
+          categories &&
+          categories.map((category: HomeCategoryType) => <HomeProductSection
+            key={category._id}
+            category={category}
+          />)
+        }
+      </div>
+      :
+      <HomeProductSectionSkeleton />
+    }
+
   </div>;
 };
 

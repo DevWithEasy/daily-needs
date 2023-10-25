@@ -1,12 +1,14 @@
 import {create} from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { UserTypes } from './store.types';
-import CategoriesType from '../types/categories.types';
+import { CategoriesType } from '../types/category.types';
+
 
 type UserStoreType = {
     status : 'start' | 'success' | 'failure'
     loading : boolean
     isAuth : boolean
+    user : UserTypes
     categories : CategoriesType[]
     setLogin : ()=> void
     setLogout : ()=> void
@@ -21,7 +23,12 @@ const userStore = (set)=>({
     loading : false,
     isAuth : false,
     categories : [],
-    user : {},
+    user : {
+        image : {
+            url : '',
+            public_id : ''
+        }
+    },
     setLogin :(data : UserTypes)=>{
         set(()=>({
             isAuth : true,

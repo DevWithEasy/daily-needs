@@ -1,11 +1,13 @@
 import {create} from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { CartProductTypes } from './store.types';
-import { HomeProductType, ProductCardType } from '../types/product.types';
+import { ProductCardType } from '../types/product.types';
+import { HomeCategoryType } from '../types/category.types';
 
 type ProductStore = {
     cart : CartProductTypes[]
-    products : HomeProductType[]
+    categories : HomeCategoryType[]
+    products : ProductCardType[]
     setProduct : ()=>void
     setAddCart : ()=>void
     setRemoveCart : ()=>void
@@ -14,8 +16,16 @@ type ProductStore = {
 
 const productStore = (set)=>({
     cart : [],
+    categories : [],
     products : [],
-    setProducts : (data : HomeProductType[])=>{
+    setCategoies : (data : HomeCategoryType[])=>{
+
+        set(()=>({
+            categories : data
+        }))
+        
+    },
+    setProducts : (data : ProductCardType[])=>{
 
         set(()=>({
             products : data

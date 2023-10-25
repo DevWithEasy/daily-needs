@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import logo from "./../assets/image/logo.webp";
 import { BsFacebook, BsYoutube, BsLinkedin, BsCart2 } from "react-icons/bs";
-import { AiFillInstagram, AiOutlineMenu } from "react-icons/ai";
+import { AiFillInstagram, AiOutlineLogout, AiOutlineMenu } from "react-icons/ai";
 import { BiDownArrow, BiSearch } from "react-icons/bi";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import {LoginModal} from "./Index";
@@ -9,8 +8,11 @@ import { useState } from "react";
 import useProductStore from "../store/productStore";
 import { CartProductTypes } from "../store/store.types";
 import CategoryDrawer from "./CategoryDrawer";
+import useUserStore from "../store/userStore";
+import user_image from '.././assets/image/profile.png'
 const Header = () => {
   const {cart} = useProductStore()
+  const {isAuth,user,setLogout} = useUserStore()
   const [view, setView] = useState(false)
   const [drawerView, setDrawerView] = useState(false)
   const handleView = () => {
@@ -20,12 +22,13 @@ const Header = () => {
     setDrawerView(!drawerView);
   };
   const total = cart.reduce((acc: number, cur: CartProductTypes) => acc + cur.price * cur.buyQuantity, 0)
+  
   return (
     <div className="sticky top-0 pt-2 bg-white border-b-2 shadow">
       <div className="w-11/12 mx-auto">
         <div className="flex items-center">
-          <div className="w-3/12">
-            <img src={logo} alt="" className="h-16" />
+          <div className="w-3/12 py-2">
+            <span className="text-3xl font-bold">Daily Needs</span>
           </div>
           <div className="w-9/12 flex justify-between items-center">
             <div className="space-x-4">
@@ -114,9 +117,18 @@ const Header = () => {
               <BiSearch size={20} className="cursor-pointer" />
             </div>
             <div className="w-96 flex items-center space-x-4">
-              <button onClick={handleView} className="upprescase">
+              {isAuth ?
+                <Link to='/profile'>
+                  <img 
+                    src={`${user.image.url ? user.image.url : user_image}`}
+                    className="w-10"
+                  />
+                </Link>
+                :
+                <button onClick={handleView} className="upprescase">
                 Login/Register
-              </button>
+                </button>
+              }
               <Link to="/cart" className="flex items-center space-x-4">
                 <div className="relative">
                   <BsCart2 size={25} />
@@ -126,6 +138,13 @@ const Header = () => {
                 </div>
                 <span className="text-sm font-medium"> ৳ {total}</span>
               </Link>
+              {isAuth &&
+                <AiOutlineLogout
+                  onClick={setLogout}  
+                  size={25} 
+                  className='text-red-500 cursor-pointer'
+                />
+              }
               {view &&
                 <LoginModal {...{
                   view,

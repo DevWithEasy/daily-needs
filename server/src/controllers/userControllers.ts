@@ -25,6 +25,10 @@ export const signup = async (
         const newUser = new User({
             ...req.body,
             password: hashed,
+            image : {
+                url : '',
+                public_id : ''
+            }
         });
 
         const user = await newUser.save();
