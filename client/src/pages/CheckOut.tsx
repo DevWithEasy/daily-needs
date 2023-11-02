@@ -5,14 +5,17 @@ import { Input } from "../components/Index";
 import useProductStore from "../store/productStore";
 import paylogo from '../assets/image/sslcommerze_logo.png'
 import { CartProductTypes } from "../store/store.types";
+import useUserStore from "../store/userStore";
+import { Link } from "react-router-dom";
 
 const CheckOut = () => {
+  const {user} = useUserStore()
   const {cart} = useProductStore()
   const [value, setValue] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    shippingAddress: ""
+    name: user.name,
+    phone: user.phone,
+    email: user.email,
+    shippingAddress: user.address.area && user.address.postOffice && user.address.upazilla && user.address.district ? `${user.address.area}, ${user.address.postOffice}, ${user.address.upazilla}, ${user.address.district}` : '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -23,8 +26,10 @@ const CheckOut = () => {
     }));
   }
 
-  const handleCheckout = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleCheckout = async () => {
+    if(!value.email || !value.name || !value.phone || !value.shippingAddress){
+      return alert('Please enter')
+    }
     try {
       const res = await axios.post(`${apiUrl}/user/signin`, value);
       if (res.data.success === true) {
@@ -49,6 +54,7 @@ const CheckOut = () => {
               name: "name",
               label: "Name",
               placeholder: "Enter your name",
+              value: value.name,
               handleChange: handleChange,
             }}
           />
@@ -57,6 +63,7 @@ const CheckOut = () => {
               name: "phone",
               label: "Phone Number",
               placeholder: "Enter Phone number",
+              value: value.phone,
               handleChange: handleChange,
             }}
           />
@@ -65,6 +72,7 @@ const CheckOut = () => {
               name: "email",
               label: "Email Address",
               placeholder: "Enter your email address",
+              value: value.email,
               handleChange: handleChange,
             }}
           />
@@ -83,7 +91,7 @@ const CheckOut = () => {
       <div
         className="w-1/2 p-4 bg-gray-50"
       >
-        <h2 className="text-3xl text-center font-semibold">Your order</h2>
+        <h2 className="pb-3 text-3xl text-center font-semibold">Your order</h2>
         <div className="p-4 bg-white shadow-sm">
             <p className="px-2 py-3 flex justify-between uppercase font-semibold border-b-2">
               <span>Product</span>
@@ -117,6 +125,17 @@ const CheckOut = () => {
         <div className="p-4 bg-white shadow-sm">
             Please check the Delivery Policy before completing your order
         </div>
+        <hr/>
+        <div className="p-2 py-5">
+          Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our 
+          <Link to='/privacy' className="text-blue-500"> privacy policy</Link>.
+        </div>
+        <button
+          onClick={handleCheckout}
+          className="block w-full p-2 bg-green-600 text-white uppercase rounded"
+        >
+          Place Order
+        </button>
       </div>
     </div>
   );
