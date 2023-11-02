@@ -48,9 +48,19 @@ export interface IComment extends Document {
 }
 
 export interface IOrder extends Document {
+    user : string
     name: string
+    email : string
+    phone : string
+    address : {
+        area : string,
+        postOffice : string
+        upazilla : string
+        district : string
+    }
     bill: number
     charge: number
+    isDeliveried : boolean
     products: {
         quantity: number
         product: string

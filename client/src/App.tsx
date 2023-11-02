@@ -33,6 +33,8 @@ import {
   Users,
   Verification,
   ProductsByCategory,
+  Success,
+  Cancel,
 } from "./pages/Index";
 
 function App() {
@@ -189,6 +191,30 @@ function App() {
                 <CheckOut />
               </UserLayout>
             </Protected>
+          }
+        />
+        <Route
+          path="/success/:id"
+          element={
+            <UserLayout>
+              <Success />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/cancel/:id"
+          element={
+            <UserLayout>
+              <Cancel />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/failed/:id"
+          element={
+            <UserLayout>
+              <Cancel />
+            </UserLayout>
           }
         />
         <Route

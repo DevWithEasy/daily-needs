@@ -7,6 +7,10 @@ import paylogo from '../assets/image/sslcommerze_logo.png'
 import { CartProductTypes } from "../store/store.types";
 import useUserStore from "../store/userStore";
 import { Link } from "react-router-dom";
+import districts from '../assets/location_data/bd-districts.json'
+import upazillas from '../assets/location_data/bd-upazilas.json'
+import postcodes from '../assets/location_data/bd-postcodes.json'
+import { ProductCardType } from "../types/product.types";
 
 const CheckOut = () => {
   const {user} = useUserStore()
@@ -15,10 +19,13 @@ const CheckOut = () => {
     name: user.name,
     phone: user.phone,
     email: user.email,
-    shippingAddress: user.address.area && user.address.postOffice && user.address.upazilla && user.address.district ? `${user.address.area}, ${user.address.postOffice}, ${user.address.upazilla}, ${user.address.district}` : '',
+    area : user.address.area,
+    postOffice : user.address.postOffice,
+    upazilla : user.address.upazilla,
+    district : user.address.district,
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setValue((prevVelue) => ({
       ...prevVelue,
@@ -26,12 +33,40 @@ const CheckOut = () => {
     }));
   }
 
+  const total = cart.reduce((acc: number, cur: CartProductTypes) => acc + cur.price * cur.buyQuantity, 0)
+
+  const district =  districts.districts.find(district => district.name == value.district)
+
+  const order = {
+    name : value.name,
+    phone : value.phone,
+    email : value.email,
+    address : {
+      area : value.area,
+      postOffice : value.postOffice,
+      upazilla : value.upazilla,
+      district : value.district
+    },
+    bill : total,
+    charge : 160,
+    products : cart.map((product : CartProductTypes)=> {
+      return {
+        quantity : product.buyQuantity,
+        product : product._id
+      }
+    })
+  }
+
   const handleCheckout = async () => {
-    if(!value.email || !value.name || !value.phone || !value.shippingAddress){
+    if(!value.email || !value.name || !value.phone || !value.area || !value.postOffice || !value.upazilla || !value.district){
       return alert('Please enter')
     }
     try {
-      const res = await axios.post(`${apiUrl}/user/signin`, value);
+      const res = await axios.post(`${apiUrl}/order/`, order , {
+        headers : {
+          authorization : 'Bearer ' + localStorage.getItem('token')
+        }
+      });
       if (res.data.success === true) {
         console.log('first')
       }
@@ -40,11 +75,11 @@ const CheckOut = () => {
     }
   }
 
-  const total = cart.reduce((acc: number, cur: CartProductTypes) => acc + cur.price * cur.buyQuantity, 0)
+  console.log(order)
 
   return (
-    <div className="flex justify-between space-x-3">
-      <div className="w-1/2 space-y-3">
+    <div className="grid md:grid-cols-2 gap-3">
+      <div className="space-y-3">
         <h2 className="text-3xl">
           Billing Address
         </h2>
@@ -76,20 +111,67 @@ const CheckOut = () => {
               handleChange: handleChange,
             }}
           />
-          <div className="space-y-2">
-            <label>Shipping Address :</label>
+          <fieldset className="p-2 space-y-2 border border-dashed">
+            <legend>Shipping Address</legend>
+            <select
+              name="district"
+              value={value.district}
+              onChange={(e)=>handleChange(e)}
+              className="p-2 w-full border rounded focus:outline-green-500"
+            >
+              <option value="">Select district</option>
+              {
+                districts.districts.
+                map((district)=>
+                  <option value={district.name}>{district.name}</option>
+                )
+              }
+            </select>
+            <select
+              name="upazilla"
+              value={value.upazilla}
+              onChange={(e)=>handleChange(e)}
+              className="p-2 w-full border rounded focus:outline-green-500"
+            >
+              <option value="">Select upazilla</option>
+              {
+                upazillas.upazilas.
+                filter(upazilla => upazilla.district_id == district?.id)
+                .map(upazilla => 
+                    <option>{upazilla.name}</option>
+                )
+              }
+            </select>
+            <select
+              name="postOffice"
+              value={value.postOffice}
+              onChange={(e)=>handleChange(e)}
+              className="p-2 w-full border rounded focus:outline-green-500"
+            >
+              <option value="">Select district</option>
+              {
+                postcodes.postcodes.
+                filter(postcode => postcode.district_id  == district?.id )
+                .map(postcode=>
+                  <option value={`${postcode.postOffice} (${postcode.postCode})`}>
+                    {postcode.postOffice}({postcode.postCode})
+                  </option>
+                )
+              }
+            </select>
             <textarea 
-              name="shippingAddress" 
-              value={value.shippingAddress} 
-              onChange={handleChange} 
+              name="area" 
+              value={value.area} 
+              onChange={(e)=>handleChange(e)} 
               rows={3}
+              placeholder="Location area"
               className="w-full p-2 border focus:border focus:outline-green-400 rounded"
             />
-          </div>
+          </fieldset>
         </div>
       </div>
       <div
-        className="w-1/2 p-4 bg-gray-50"
+        className="p-4 bg-gray-50"
       >
         <h2 className="pb-3 text-3xl text-center font-semibold">Your order</h2>
         <div className="p-4 bg-white shadow-sm">

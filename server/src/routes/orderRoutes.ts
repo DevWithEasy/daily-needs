@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-    checkOut,
     createOrder,
     deleteOrder,
     getAllOrder,
@@ -14,7 +13,6 @@ const orderRouter = Router();
 
 orderRouter
     .post("/", authenticated, createOrder)
-    .post("/checkout", authenticated, checkOut)
     .put("/:id", authenticated, updateOrder)
     .delete("/:id",authenticated, deleteOrder)
     .get("/:id",authenticated, getOrder)

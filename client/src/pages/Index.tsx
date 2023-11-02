@@ -31,8 +31,14 @@ import Protected from "./Protected";
 import AddCategory from "./admin/category/AddCategory";
 import UpdateCategory from "./admin/category/UpdateCategory";
 import ProductsByCategory from "./ProductsByCategory";
+import Success from "./Success";
+import Cancel from "./Cancel";
+import Failed from "./Failed";
 
 export {
+    Failed,
+    Cancel,
+    Success,
     ProductsByCategory,
     UpdateCategory,
     AddCategory,
