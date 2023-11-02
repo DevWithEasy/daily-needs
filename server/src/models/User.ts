@@ -24,9 +24,11 @@ const userSchema = new mongoose.Schema(
         image: {
             url :{
                 type: String,
+                default : ''
             },
             public_id : {
-                type : String
+                type : String,
+                default : ''
             }
         },
         password: {
@@ -53,15 +55,19 @@ const userSchema = new mongoose.Schema(
         address: {
             area: {
                 type: String,
+                default : ''
             },
             postOffice: {
                 type: String,
+                default : ''
             },
             upazilla: {
                 type: String,
+                default : ''
             },
             district: {
                 type: String,
+                default : ''
             },
         },
     },

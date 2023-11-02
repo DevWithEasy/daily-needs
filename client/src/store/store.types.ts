@@ -11,7 +11,7 @@ export type UserTypes = {
     orders: string[]
     address: {
         area?: string
-        postOfice?: string
+        postOffice?: string
         upazilla?: string
         district?: string
     }

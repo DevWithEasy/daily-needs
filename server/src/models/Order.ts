@@ -6,6 +6,37 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref : 'User'
     },
+    name : {
+        type : String,
+        required : true
+    },
+    phone : {
+        type : String,
+        required : true
+    },
+    
+    email : {
+        type : String,
+        required : true
+    },
+    address: {
+        area: {
+            type: String,
+            required : true
+        },
+        postOffice: {
+            type: String,
+            required : true
+        },
+        upazilla: {
+            type: String,
+            required : true
+        },
+        district: {
+            type: String,
+            required : true
+        },
+    },
     bill : {
         type : Number,
         required : true
@@ -13,6 +44,10 @@ const orderSchema = new mongoose.Schema({
     charge : {
         type : Number,
         required : true
+    },
+    isDeliveried : {
+        type : Boolean,
+        default : false
     },
     products : {
         type : [
@@ -26,15 +61,13 @@ const orderSchema = new mongoose.Schema({
                     ref : 'Product'
                 }
             }
-        ],
-        required : true
+        ]
     },
     status : {
         type : [
             {
                 date : {
-                    date : Date,
-                    required :true,
+                    type : Date,
                     default : Date.now()
                 },
                 status : {

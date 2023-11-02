@@ -18,16 +18,31 @@ type UserStoreType = {
     setStatus : ()=> void
 }
 
-const userStore = (set)=>({
+const userStore  = (set)=>({
     status : 'start',
     loading : false,
     isAuth : false,
     categories : [],
     user : {
-        image : {
-            url : '',
-            public_id : ''
-        }
+        _id  : '',
+        name: '',
+        email: '',
+        phone : '',
+        image: {
+            url: '',
+            public_id: '',
+        },
+        password: '',
+        isVerified: '',
+        orders: [],
+        address: {
+            area: '',
+            postOffice: '',
+            upazilla: '',
+            district: '',
+        },
+        createdAt : '',
+        updatedAt : '',
     },
     setLogin :(data : UserTypes)=>{
         set(()=>({

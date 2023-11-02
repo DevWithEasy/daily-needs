@@ -1,12 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../utils/AppError";
+import IAuthRequest from "../interface/authentication";
+import Order from "../models/Order";
 
 export const createOrder = async (
-    req: Request,
+    req: IAuthRequest,
     res: Response,
     next: NextFunction
 ) => {
     try {
+        const newOrder = new Order({
+            user : req.user,
+            ...req.body,
+            status : [
+                {
+                    date : Date.now(),
+                    status : 'Your order placed successfully.'
+                }
+            ]
+        })
+        const order = newOrder.save()
         res.json({
             success: true,
             status: 200,
