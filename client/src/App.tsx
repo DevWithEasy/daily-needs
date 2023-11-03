@@ -35,6 +35,7 @@ import {
   ProductsByCategory,
   Success,
   Cancel,
+  UserAccountLayout,
 } from "./pages/Index";
 
 function App() {
@@ -157,9 +158,9 @@ function App() {
           path="/profile"
           element={
             <Protected>
-              <UserLayout>
+              <UserAccountLayout>
                 <Profile />
-              </UserLayout>
+              </UserAccountLayout>
             </Protected>
           }
         />
@@ -167,9 +168,9 @@ function App() {
           path="/profile/update"
           element={
             <Protected>
-              <UserLayout>
+              <UserAccountLayout>
                 <UpdateProfile />
-              </UserLayout>
+              </UserAccountLayout>
             </Protected>
           }
         />
@@ -221,9 +222,9 @@ function App() {
           path="/myorders"
           element={
             <Protected>
-              <UserLayout>
+              <UserAccountLayout>
                 <MyOders />
-              </UserLayout>
+              </UserAccountLayout>
             </Protected>
           }
         />

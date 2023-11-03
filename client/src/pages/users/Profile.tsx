@@ -1,5 +1,12 @@
+import useUserStore from "../../store/userStore";
+
 const Profile = () => {
-  return <div></div>;
+  const {user} = useUserStore()
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default Profile;
