@@ -1,11 +1,8 @@
+import axios from "axios";
 import { NextFunction, Request, Response } from "express";
 import IAuthRequest from "../interface/authentication";
 import Order from "../models/Order";
 import AppError from "../utils/AppError";
-
-// Add the following line above the module import
-declare const SSLCommerzPayment: any;
-
 
 export const createOrder = async (
     req: IAuthRequest,
@@ -24,14 +21,41 @@ export const createOrder = async (
             ],
         });
 
-        const order = await newOrder.save();
+        const formData = {
+            cus_name: req.body.name,
+            cus_email: req.body.email,
+            cus_phone: req.body.phone,
+            amount: req.body.bill,
+            tran_id: newOrder._id,
+            signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
+            store_id: "aamarpaytest",
+            currency: "BDT",
+            desc: "dafsdfhfasdhfasifhasf",
+            cus_add1: "53, Gausul Azam Road, Sector-14, Dhaka, Bangladesh",
+            cus_add2: "Dhaka",
+            cus_city: "Dhaka",
+            cus_country: "Bangladesh",
+            success_url: `http://localhost:3000/success/${newOrder._id}`,
+            fail_url: `http://localhost:3000/fail/${newOrder._id}`,
+            cancel_url: `http://localhost:3000/cancel/${newOrder._id}`,
+            type: "json", //This is must required for JSON request
+        };
+        const { data } = await axios.post(
+            "https://sandbox.aamarpay.com/jsonpost.php",
+            formData
+        );
 
-        res.json({
-            success: true,
-            status: 200,
-            message: "Successfully product create.",
-            data: "",
-        });
+        if (data.result === "true") {
+            // const order = await newOrder.save();
+            res.json({
+                success: true,
+                status: 200,
+                message: "Successfully product create.",
+                url: data.payment_url,
+            });
+        } else {
+            next(new AppError(500, "Payment error."));
+        }
     } catch (error) {
         next(new AppError(500, error.message));
     }
