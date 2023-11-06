@@ -38,7 +38,7 @@ export const createOrder = async (
             success_url: `http://localhost:3000/success/${newOrder._id}`,
             fail_url: `http://localhost:3000/fail/${newOrder._id}`,
             cancel_url: `http://localhost:3000/cancel/${newOrder._id}`,
-            type: "json", //This is must required for JSON request
+            type: "json",
         };
         const { data } = await axios.post(
             "https://sandbox.aamarpay.com/jsonpost.php",
