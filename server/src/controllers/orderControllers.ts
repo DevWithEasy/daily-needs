@@ -46,7 +46,7 @@ export const createOrder = async (
         );
 
         if (data.result === "true") {
-            // const order = await newOrder.save();
+            const order = await newOrder.save();
             res.json({
                 success: true,
                 status: 200,
