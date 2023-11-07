@@ -36,7 +36,7 @@ export const createOrder = async (
             cus_city: "Dhaka",
             cus_country: "Bangladesh",
             success_url: `http://localhost:3000/success/${newOrder._id}`,
-            fail_url: `http://localhost:3000/fail/${newOrder._id}`,
+            fail_url: `http://localhost:3000/failed/${newOrder._id}`,
             cancel_url: `http://localhost:3000/cancel/${newOrder._id}`,
             type: "json",
         };
@@ -84,10 +84,11 @@ export const deleteOrder = async (
     next: NextFunction
 ) => {
     try {
+        console.log(req.params)
         res.json({
             success: true,
             status: 200,
-            message: "Successfully product create.",
+            message: "Successfully product deleted.",
             data: "",
         });
     } catch (error) {

@@ -120,7 +120,7 @@ const Header = () => {
               {isAuth ?
                 <Link to='/profile'>
                   <img 
-                    src={`${user.image.url ? user.image.url : user_image}`}
+                    src={`${user?.image?.url ? user?.image?.url : user_image}`}
                     className="w-10"
                   />
                 </Link>
